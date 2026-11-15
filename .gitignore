@@ -1,0 +1,5 @@
+node_modules/
+test/ekran/
+test/indir/
+__pycache__/
+dist/stil.css

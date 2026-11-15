@@ -1,0 +1,17 @@
+{
+  "name": "ag-masasi",
+  "version": "1.0.0",
+  "description": "Sosyal ağ analizi için ücretsiz, kurulumsuz araç",
+  "main": "index.js",
+  "scripts": {
+    "build": "python3 build.py"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.3.5",
+    "daisyui": "^5.8.0",
+    "tailwindcss": "^4.3.5"
+  }
+}

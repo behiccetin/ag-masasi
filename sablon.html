@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="ag">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data: blob:; font-src data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+<title>Ağ Masası (Ag Masasi): ücretsiz sosyal ağ analizi aracı / free social network analysis software</title>
+<meta name="keywords" content="sosyal ağ analizi, ağ analizi, ağ analizi programı, UCINET alternatifi, Gephi alternatifi, merkezilik, topluluk bulma, QAP, MRQAP, bibliyometrik analiz, ortak yazarlık ağı, social network analysis, network analysis software, free, browser, Ag Masasi">
+<meta name="author" content="Behiç Çetin">
+<meta property="og:title" content="Ağ Masası (Ag Masasi): ücretsiz sosyal ağ analizi aracı">
+<meta property="og:description" content="Kurulum gerektirmeyen, tarayıcıda çalışan ücretsiz sosyal ağ analizi aracı. A free, install-free, browser-based tool for social network analysis.">
+<meta property="og:type" content="website">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Ağ Masası","alternateName":["Ag Masasi","Network Desk"],"applicationCategory":"EducationalApplication","applicationSubCategory":"Social network analysis","operatingSystem":"Any (web browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"},"author":{"@type":"Person","name":"Behiç Çetin","affiliation":"Burdur Mehmet Akif Ersoy Üniversitesi"},"license":"https://opensource.org/licenses/MIT","inLanguage":["tr","en"],"codeRepository":"https://github.com/behiccetin/ag-masasi"}</script>
+<meta name="description" content="Ağ Masası (Ag Masasi): sosyal ağ analizi için tarayıcıda çalışan, kurulumsuz, ücretsiz araç: merkezilik ölçüleri, topluluk bulma, çekirdek-çevre, aracılık, triad sayımı, dayanıklılık, QAP ve MRQAP testleri, yayın kalitesinde ağ çizimi ve Word raporu.">
+<style>/*__CSS__*/</style>
+</head>
+<body class="bg-base-100 text-base-content">
+
+<div id="sekmeUyari" class="hidden alert alert-warning rounded-none justify-center text-sm"><span data-t="otherTab"></span><button class="btn btn-sm" id="yenile" data-t="reload"></button></div>
+
+<div class="flex flex-col h-screen min-w-0">
+  <header class="bg-base-100 border-b border-base-300 yazdirma">
+    <div class="flex items-center gap-2 px-3 h-13 min-h-13">
+      <button class="flex items-center gap-2 shrink-0 rounded-field px-1 py-1 hover:bg-base-200" data-sekme="giris" data-ta="tabHome" id="evBtn">
+        <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><g stroke="currentColor" stroke-width="1.6" fill="none"><path d="M7 9 16 6l9 5M7 9l3 13 6-16M25 11l-2 11-13 0M10 22l15-11M16 6l7 16"/></g><g fill="currentColor"><circle cx="7" cy="9" r="2.6"/><circle cx="16" cy="6" r="2.1"/><circle cx="25" cy="11" r="2.6"/><circle cx="10" cy="22" r="3.4"/><circle cx="23" cy="22" r="2.1"/></g></svg>
+        <span class="dar font-bold text-lg tracking-tight hidden sm:inline">Ağ Masası</span></button>
+      <span class="w-px h-6 bg-base-300 hidden sm:block"></span>
+      <input id="projeAd" class="input input-ghost input-sm font-medium w-full min-w-24 max-w-80" data-ta="projectName">
+      <span id="kayitDurum" class="text-xs text-base-content/55 hidden 2xl:inline whitespace-nowrap"></span>
+      <div class="flex-1"></div>
+      <label class="hidden md:flex items-center gap-1 text-sm" id="iliskiSecKutu"><span class="text-base-content/60" data-t="relation"></span><select id="iliskiSec" class="select select-sm select-ghost w-44 font-medium"></select><span data-ip="iliski"></span></label>
+      <div class="join">
+        <button class="btn btn-ghost btn-sm btn-square join-item" id="geriAl" data-ta="undo" disabled><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg></button>
+        <button class="btn btn-ghost btn-sm btn-square join-item" id="yinele" data-ta="redo" disabled><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 14 5-5-5-5"/><path d="M20 9H9a5 5 0 0 0 0 10h3"/></svg></button>
+      </div>
+      <select id="dilSec" class="select select-sm select-ghost w-28 hidden sm:block" data-ta="language"></select>
+      <button class="btn btn-ghost btn-sm btn-square" id="temaBtn" data-ta="theme"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+      <div class="dropdown dropdown-end">
+        <button tabindex="0" class="btn btn-ghost btn-sm" data-ta="menuFile"><span data-t="menuFile" class="hidden lg:inline"></span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <ul tabindex="0" class="dropdown-content menu bg-base-100 border border-base-300 rounded-box z-50 w-72 p-2 mt-1 text-sm">
+          <li><button data-arac="yeni" data-t="newProject"></button></li>
+          <li><button data-arac="ac" data-t="openProject"></button></li>
+          <li><button data-arac="kaydet" data-t="saveProject"></button></li>
+          <li><button data-arac="ornek" data-t="loadSample"></button></li>
+          <li class="menu-title" data-t="menuData"></li>
+          <li><button data-arac="ice" data-t="importData"></button></li>
+          <li><button data-arac="disa" data-t="exportData"></button></li>
+          <li class="menu-title" data-t="menuTools"></li>
+          <li><button data-arac="ayarlar" data-t="toolSettings"></button></li>
+          <li><button data-arac="gunluk" data-t="toolLog"></button></li>
+          <li><button data-arac="atif" data-tg="atif.dugme"></button></li>
+          <li class="sm:hidden"><select id="dilSecM" class="select select-sm w-full"></select></li>
+          <li class="menu-title" data-t="languageFiles"></li>
+          <li><button data-arac="dilSablon" data-t="langTemplate"></button></li>
+          <li><button data-arac="dilYukle" data-t="langLoad"></button></li>
+        </ul>
+      </div>
+    </div>
+    <nav class="relative px-2 overflow-x-auto" aria-label="sekmeler">
+      <div role="tablist" class="flex gap-0.5 w-max relative" id="sekmeler">
+        <button role="tab" class="sk" data-sekme="veri"><span data-t="tabData"></span><span class="badge badge-xs badge-warning ml-1 hidden" id="rozetVeri"></span></button>
+        <button role="tab" class="sk" data-sekme="ag"><span data-t="tabNetwork"></span></button>
+        <button role="tab" class="sk" data-sekme="olcu"><span data-t="tabMeasures"></span></button>
+        <button role="tab" class="sk" data-sekme="grup"><span data-t="tabGroups"></span></button>
+        <button role="tab" class="sk" data-sekme="yapi"><span data-t="tabStructure"></span></button>
+        <button role="tab" class="sk" data-sekme="test"><span data-t="tabTests"></span></button>
+        <button role="tab" class="sk" data-sekme="rapor"><span data-t="tabReport"></span></button>
+        <button role="tab" class="sk" data-sekme="yardim"><span data-t="tabHelp"></span></button>
+        <span id="skIsaret" aria-hidden="true"></span>
+      </div>
+    </nav>
+  </header>
+
+  <main class="flex-1 min-h-0 overflow-auto flex flex-col" id="ana">
+    <section id="s-giris" class="sekme hidden"></section>
+    <section id="s-veri" class="sekme hidden"></section>
+    <section id="s-ag" class="sekme hidden flex-1 min-h-0"></section>
+    <section id="s-olcu" class="sekme hidden"></section>
+    <section id="s-grup" class="sekme hidden"></section>
+    <section id="s-yapi" class="sekme hidden"></section>
+    <section id="s-test" class="sekme hidden"></section>
+    <section id="s-rapor" class="sekme hidden"></section>
+    <section id="s-yardim" class="sekme hidden"></section>
+    <footer class="mt-auto text-xs text-base-content/60 px-4 sm:px-8 py-3 border-t border-base-300 yazdirma" id="altBilgi">
+      <p data-t="privacy"></p>
+      <p class="mt-1"><b>Ağ Masası</b> v<span id="surumYaz"></span>. <span data-t="credit"></span> <a class="link font-bold" id="behicNet" href="https://behic.net/?dil=tr" target="_blank" rel="noopener noreferrer">Öğr. Gör. Dr. Behiç ÇETİN</a>. © 2026, <span data-t="license"></span>.<span id="doiYaz"></span> <a class="link" id="iletisimBag" href="https://behic.net/?dil=tr#iletisim" target="_blank" rel="noopener noreferrer" data-t="contact"></a></p>
+    </footer>
+  </main>
+</div>
+
+<div id="ipucuKutu" class="hidden fixed z-[70] w-80 max-w-[calc(100vw-1rem)] rounded-box bg-neutral text-neutral-content text-sm leading-relaxed p-3 shadow-lg ipucu-metin" role="tooltip"></div>
+<dialog id="pencere" class="modal">
+  <div class="modal-box max-w-2xl rounded-box">
+    <div class="flex items-center gap-1 mb-3"><h3 class="dar font-bold text-xl" id="pBaslik"></h3><span id="pYardim"></span></div>
+    <div id="pIcerik"></div>
+    <div class="modal-action" id="pDugmeler"></div>
+  </div>
+  <form method="dialog" class="modal-backdrop"><button>x</button></form>
+</dialog>
+<div id="buyutme" class="hidden fixed inset-0 z-[75]" aria-modal="true" role="dialog"></div>
+<div id="tost" class="toast toast-end z-[80]"></div>
+<input type="file" id="dosyaSec" class="hidden">
+
+<script>const GOMULU_DILLER=/*__DILLER__*/{};</script>
+<script>/* Natural Earth (kamu malı) ve flag-icons (MIT), gzip + base64 */const GOMULU_COGRAFYA='/*__COG__*/';const GOMULU_BAYRAK='/*__BAYRAK__*/';</script>
+<script>
+//__JS__
+</script>
+</body>
+</html>
