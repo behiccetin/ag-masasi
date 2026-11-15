@@ -1,4 +1,6 @@
-# Ağ Masası / Network Desk
+# Ağ Masası (Ag Masasi) / Network Desk
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24262475.svg)](https://doi.org/10.5281/zenodo.24262475)
 
 Sosyal ağ analizi için tarayıcıda çalışan, kurulumsuz, ücretsiz araç. Bağ listesini, komşuluk matrisini, iki modlu veriyi, kaynakça dosyasını ya da Gephi, Pajek, UCINET dosyalarını okur; merkezilik ölçülerini, toplulukları, çekirdek-çevre yapısını, aracıları, triad sayımını, küçük dünya ve dayanıklılık analizlerini, QAP ve MRQAP testlerini hesaplar; yayına hazır ağ şeklini ve yöntem bölümü taslağını Word raporu olarak verir. Tek bir HTML dosyasıdır; internet bağlantısı kullanmaz, veriler bilgisayardan çıkmaz.
 
@@ -12,7 +14,7 @@ A free, install-free, browser-based tool for social network analysis. It reads e
 
 **Gruplar ve yapı / Groups and structure:** Louvain toplulukları (çözünürlük, çok koşu, kararlılık), NMI, E-I endeksi ve permütasyon testi, kategorik ve sayısal uyum, Borgatti-Everett çekirdek-çevre modeli, kesme noktaları ve köprüler, triad ve diad sayımı, küçük dünya σ, hedefli ve rastgele düğüm kaybında dayanıklılık (R endeksi), eşitsizlik süzgeciyle omurga.
 
-**Testler / Tests:** QAP korelasyonu, çift yarı kısmi permütasyonlu MRQAP.
+**Testler / Tests:** QAP korelasyonu, çift yarı kısmi permütasyonlu MRQAP, rastgele ağlarla karşılaştırma (koşullu tek biçimli çizge testi; yoğunluğu ya da derece dizisini koruyan), düğüm düzeyinde permütasyon testi (F ve η², Pearson r), asortativite testi (Newman), modülerliğin anlamlılığı (derece dizisini koruyan rastgele ağlarla). Her testin formülü arayüzde gösterilir.
 
 ## Çizim / Drawing
 
@@ -58,6 +60,10 @@ Web sürümü de verileri yalnızca tarayıcınızda tutar. / The web version al
 ## Atıf / Citation
 
 Ağ Masası'nı kullandıysanız lütfen kaynak gösterin. Araçtaki **Atıf** penceresi APA, İSNAD ve BibTeX biçimlerini verir.
+
+Çetin, B. (2026). *Ağ Masası (Ag Masasi)* (Sürüm 1.0.0) [Bilgisayar yazılımı]. Zenodo. https://doi.org/10.5281/zenodo.24262476
+
+Bütün sürümler için / For all versions: https://doi.org/10.5281/zenodo.24262475
 
 ## Lisans / License
 
