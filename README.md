@@ -67,11 +67,9 @@ Web sürümü de verileri yalnızca tarayıcınızda tutar. / The web version al
 
 Ağ Masası'nı kullandıysanız lütfen kaynak gösterin. Araçtaki **Atıf** penceresi APA, İSNAD ve BibTeX biçimlerini verir.
 
-Çetin, B. (2026). *Ağ Masası (Ag Masasi)* (Sürüm 1.1.0) [Bilgisayar yazılımı]. Zenodo. https://doi.org/10.5281/zenodo.24262475
+Çetin, B. (2026). *Ağ Masası (Ag Masasi)* (Sürüm 1.1.0) [Bilgisayar yazılımı]. Zenodo. https://doi.org/10.5281/zenodo.24288366
 
-Bu DOI bütün sürümleri kapsar ve en yeni sürümü açar. Sürüm 1.0.0: https://doi.org/10.5281/zenodo.24262476
-
-This DOI covers all versions and resolves to the latest. Version 1.0.0: https://doi.org/10.5281/zenodo.24262476
+Bütün sürümler için / For all versions: https://doi.org/10.5281/zenodo.24262475 (en yeni sürümü açar / resolves to the latest). Sürüm / Version 1.0.0: https://doi.org/10.5281/zenodo.24262476
 
 ## Lisans / License
 
