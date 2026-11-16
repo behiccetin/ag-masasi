@@ -1,7 +1,7 @@
 /* Ağ Masası · Öğr. Gör. Dr. Behiç ÇETİN · MIT Lisansı */
 
 /* ====================== DURUM ====================== */
-const SURUM='1.0.0';
+const SURUM='1.1.0';
 const KAYIT='agMasasi.v1';
 const S={P:null,dil:'tr',sekme:'giris',kilit:false,kaydedildi:false,sonuc:null,ver:0};
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -40,7 +40,7 @@ addEventListener('scroll',()=>ipAcik&&ipKapat(),true);
    Özellikler düğüm başına {anahtar: değer} olarak tutulur; tür 'kat' (kategorik) ya da 'sayi'. */
 const GORSEL_VARSAYILAN={stil:'dergi',sb:false,boyut:'arasindalik',renk:'topluluk',etiket:14,esik:0,egri:true,gri:true,alan:true,gad:true,aciklama:true,yerlesim:'kuvvet',tohum:1,konum:null,ok:true,bayrak:false,imzaAcik:true,renkler:{},harita:{tur:'dunya',kita:'Europe',ulke:'TUR',eslesme:'ad',enlem:'',boylam:'',geo:null,geoAlan:''}};
 function bosProje(){return {tur:'ag-masasi',v:1,ad:t('untitled'),yonlu:false,agirlikli:true,yolAgirlik:false,dugumler:[],ozellikler:[],iliskiler:[],aktif:null,
-  gorsel:{...GORSEL_VARSAYILAN,harita:{...GORSEL_VARSAYILAN.harita}},topluluk:{cozunurluk:1,tekrar:30,adlar:[]},cekirdek:{cpYoksay:true},ei:{oz:null},qap:{bagimli:null,bagimsiz:[],perm:1000},omurga:{acik:false,alfa:0.05},
+  gorsel:{...GORSEL_VARSAYILAN,harita:{...GORSEL_VARSAYILAN.harita}},topluluk:{cozunurluk:1,tekrar:30,adlar:[],yontem:'louvain'},cekirdek:{cpYoksay:true},ei:{oz:null},qap:{bagimli:null,bagimsiz:[],perm:1000},omurga:{acik:false,alfa:0.05},
   ondalik:3,not:'',gunluk:[],olusturma:new Date().toISOString(),rev:0}}
 const P=()=>S.P;
 function projeDuzelt(p){const b=bosProje();p.v=1;p.ad=p.ad||b.ad;p.yonlu=!!p.yonlu;p.agirlikli=p.agirlikli!==false;p.yolAgirlik=!!p.yolAgirlik;
@@ -51,6 +51,7 @@ function projeDuzelt(p){const b=bosProje();p.v=1;p.ad=p.ad||b.ad;p.yonlu=!!p.yon
   p.iliskiler=(Array.isArray(p.iliskiler)?p.iliskiler:[]).filter(r=>r&&r.id).map(r=>({id:String(r.id),ad:String(r.ad??''),kenarlar:(Array.isArray(r.kenarlar)?r.kenarlar:[]).filter(e=>Array.isArray(e)&&ids.has(String(e[0]))&&ids.has(String(e[1]))&&e[0]!==e[1]).map(e=>[String(e[0]),String(e[1]),typeof e[2]==='number'&&isFinite(e[2])&&e[2]>0?e[2]:1])}));
   if(!p.iliskiler.some(r=>r.id===p.aktif))p.aktif=p.iliskiler[0]?.id||null;
   p.gorsel=Object.assign({},GORSEL_VARSAYILAN,p.gorsel||{});p.gorsel.harita=Object.assign({},GORSEL_VARSAYILAN.harita,p.gorsel.harita||{});if(!p.gorsel.renkler||typeof p.gorsel.renkler!=='object')p.gorsel.renkler={};
+  if(p.gorsel.dugum&&typeof p.gorsel.dugum==='object'){const D={};for(const [id,x] of Object.entries(p.gorsel.dugum))if(ids.has(id)&&x&&typeof x==='object'){const y={};if(/^#[0-9a-f]{6}$/i.test(x.renk||''))y.renk=x.renk;if(typeof x.boyut==='number'&&x.boyut>=0.25&&x.boyut<=4&&x.boyut!==1)y.boyut=x.boyut;if(x.etiket==='goster'||x.etiket==='gizle')y.etiket=x.etiket;if(Object.keys(y).length)D[id]=y}if(Object.keys(D).length)p.gorsel.dugum=D;else delete p.gorsel.dugum}else delete p.gorsel.dugum;
   for(const k of ['topluluk','cekirdek','ei','qap','omurga'])p[k]=Object.assign({},b[k],p[k]||{});
   p.qap.bagimsiz=Array.isArray(p.qap.bagimsiz)?p.qap.bagimsiz:[];p.topluluk.adlar=(Array.isArray(p.topluluk.adlar)?p.topluluk.adlar:[]).filter(x=>x&&typeof x.ad==='string'&&Array.isArray(x.uye));
   p.ondalik=Math.min(6,Math.max(2,+p.ondalik||3));p.gunluk=Array.isArray(p.gunluk)?p.gunluk:[];p.rev=p.rev||0;return p}

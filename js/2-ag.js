@@ -113,15 +113,23 @@ function louvainTek(G,gamma,r){/* komşuluk: dizinler ve ağırlıklar; düzey d
     uye=uye.map(u=>yeni.get(com[u]));const ag=Array.from({length:M},()=>new Map());for(let v=0;v<N;v++)for(const [u,w] of adj[v]){const a=yeni.get(com[v]),b=yeni.get(com[u]);ag[a].set(b,(ag[a].get(b)||0)+w)}
     adj=ag.map(m=>[...m.entries()]);N=M;void self}
   return uye}
+/* yontem: 'louvain' (yönü yok sayar; özgün, varsayılan), 'dlouvain' (Leicht-Newman yönlü Louvain), 'leiden', 'infomap'. Ayrıntılar js/2c-yonlu-topluluk.js */
+const TOPLULUK_YONTEMLERI=['louvain','dlouvain','leiden','infomap'];
 function toplulukBul(G,o={}){const gamma=o.gamma??1,R=Math.max(1,o.tekrar??30),r=prng(o.tohum??7);const kos=[];
-  for(let k=0;k<R;k++){const c=louvainTek(G,gamma,r);kos.push({c,Q:modulerlik(G,c,gamma)})}kos.sort((a,b)=>b.Q-a.Q);const en=kos[0];
+  let yontem=TOPLULUK_YONTEMLERI.includes(o.yontem)?o.yontem:'louvain';if(yontem==='dlouvain'&&!G.yonlu)yontem='louvain';
+  const F=yontem==='infomap'?infomapAkis(G):null;if(yontem==='infomap'&&!F)yontem='louvain';
+  for(let k=0;k<R;k++){let c,Q;
+    if(yontem==='louvain'){c=louvainTek(G,gamma,r);Q=modulerlik(G,c,gamma)}
+    else{c=yontem==='dlouvain'?yonluLouvainTek(G,gamma,r):yontem==='leiden'?leidenTek(G,gamma,r):infomapTek(F,r);Q=modulerlikYonlu(G,c,yontem==='infomap'?1:gamma)}
+    const e={c,Q,skor:Q};if(F){e.L=imL(F,c);e.skor=-e.L}kos.push(e)}
+  kos.sort((a,b)=>b.skor-a.skor);const en=kos[0];
   /* toplulukları büyüklüğe göre 0'dan numarala */
   const say=new Map();en.c.forEach(c=>say.set(c,(say.get(c)||0)+1));const sira=[...say.entries()].sort((a,b)=>b[1]-a[1]||a[0]-b[0]).map(x=>x[0]);const yeni=new Map(sira.map((c,i)=>[c,i]));const c=en.c.map(x=>yeni.get(x));
   /* kararlılık: düğümün en iyi bölmedeki topluluğu ile her koşudaki topluluğu arasındaki Jaccard benzerliğinin ortalaması */
   const uyeler=k=>{const m=new Map();k.forEach((x,i)=>{if(!m.has(x))m.set(x,[]);m.get(x).push(i)});return m};const enU=uyeler(c);
   const kar=new Float64Array(G.n);for(const ko of kos){const U2=uyeler(ko.c);for(let i=0;i<G.n;i++){const A=enU.get(c[i]),B=new Set(U2.get(ko.c[i]));let ks=0;for(const x of A)if(B.has(x))ks++;kar[i]+=ks/(A.length+B.size-ks)}}
   const karar=[...kar].map(x=>x/R);const kSay=sira.length;const tKar=Array.from({length:kSay},(_,k)=>ortala(enU.get(k).map(i=>karar[i])));
-  return {c,Q:en.Q,k:kSay,boyut:sira.map(x=>say.get(x)),kararlilik:karar,toplulukKararlilik:tKar,Qaralik:[kos[kos.length-1].Q,en.Q],tekrar:R,gamma}}
+  return {c,Q:en.Q,k:kSay,boyut:sira.map(x=>say.get(x)),kararlilik:karar,toplulukKararlilik:tKar,Qaralik:[Math.min(...kos.map(x=>x.Q)),Math.max(...kos.map(x=>x.Q))],tekrar:R,gamma,yontem,L:F?en.L:null,L1:F?F.L1:null}}
 /* İki bölme arasındaki normalleştirilmiş karşılıklı bilgi (aritmetik ortalama ile) */
 function nmi(a,b){a=a.map(String);b=b.map(String);const n=a.length;const say=(x)=>{const m=new Map();x.forEach(v=>m.set(v,(m.get(v)||0)+1));return m};const A=say(a),B=say(b),AB=new Map();for(let i=0;i<n;i++){const k=a[i]+'\u0001'+b[i];AB.set(k,(AB.get(k)||0)+1)}
   const H=m=>-[...m.values()].reduce((s,c)=>s+(c/n)*Math.log(c/n),0);let I=0;for(const [k,c] of AB){const [x,y]=k.split('\u0001');I+=(c/n)*Math.log((c/n)/((A.get(x)/n)*(B.get(y)/n)))}

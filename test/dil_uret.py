@@ -8,6 +8,12 @@ from dil_c import GIRIS
 from dil_d import YARDIM
 from dil_e import D2,IPUCU2,FORMUL,TESTGIRIS,YONTEM2
 D.update(D2);IPUCU.update(IPUCU2);YONTEM.update(YONTEM2)
+from dil_f import D3,IPUCU3,YONTEM3,KISA3,YARDIM3,YARDIM_SONRA
+D.update(D3);IPUCU.update(IPUCU3);YONTEM.update(YONTEM3);D['kisaltma'][0].update(KISA3[0]);D['kisaltma'][1].update(KISA3[1])
+YARDIM.update(YARDIM3)
+for yeni,once in YARDIM_SONRA.items():
+    for L in YARDIM['_sira']:
+        if yeni not in L: L.insert(L.index(once)+1,yeni)
 G={'olcu':OLCU,'agOlcu':AGOLCU,'ipucu':IPUCU,'yontem':YONTEM,'atif':ATIF,'giris':GIRIS,'yardim':YARDIM,'formul':FORMUL,'testGiris':TESTGIRIS}
 def cevir(v,i,yol):
     if isinstance(v,dict): return {k:cevir(x,i,yol+'.'+k) for k,x in v.items()}

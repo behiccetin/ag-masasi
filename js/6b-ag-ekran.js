@@ -49,15 +49,7 @@ function vurgula(i){const svg=$('#tuval svg');if(!svg)return;$$('#tuval .on').fo
   const G=agG();const K=new Set([i,...G.U[i].map(x=>x[0])]);svg.classList.add('vurgu');
   svg.querySelectorAll('.d,.et').forEach(e=>{if(K.has(+e.dataset.i))e.classList.add('on')});svg.querySelectorAll('.e').forEach(e=>{const k=(AGSVG?AGSVG.E:G.E)[+e.dataset.k];if(k&&(k.s===i||k.t===i))e.classList.add('on')})}
 function aramaVurgu(m){const svg=$('#tuval svg');if(!svg)return;svg.querySelectorAll('.bul').forEach(e=>e.classList.remove('bul'));const q=katla(m.trim());if(!q)return;const G=agG();svg.querySelectorAll('.d').forEach(e=>{if(katla(G.ad[+e.dataset.i]).includes(q))e.classList.add('bul')})}
-function seciliCiz(){const k=$('#aSecili');if(!k)return;const i=GORUNUM.secili;const G=agG();if(i==null||!G||i>=G.n){k.innerHTML='';return}const p=P(),d=p.dugumler[i],R=agOlc(),T=agTop();
-  const sira=(v)=>{const s=[...v].sort((a,b)=>b-a);return s.indexOf(v[i])+1};const kom=G.U[i].map(([j,w])=>({j,w})).sort((a,b)=>b.w-a.w||G.ad[a.j].localeCompare(G.ad[b.j],S.dil));
-  k.innerHTML=`<div class="bg-base-100 border border-base-300 rounded-box p-3 text-sm shadow-sm"><div class="flex items-start gap-2"><p class="font-bold dar text-lg flex-1">${esc(d.ad)}</p><button class="btn btn-ghost btn-xs btn-square" id="aSecKapat" aria-label="${esc(t('close'))}">×</button></div>
-    <dl class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 mt-1">${p.ozellikler.map(o=>d.oz[o.k]?`<dt class="text-base-content/60">${esc(o.ad)}</dt><dd>${esc(d.oz[o.k])}</dd>`:'').join('')}
-    <dt class="text-base-content/60">${esc(olcuAd('derece'))}</dt><dd class="rakam">${sayi(R.D.derece[i])} <span class="text-base-content/50">(${esc(t('rankN',sayi(sira(R.D.derece))))})</span></dd>
-    <dt class="text-base-content/60">${esc(olcuAd('arasindalik'))}</dt><dd class="rakam">${sd(R.D.arasindalik[i])} <span class="text-base-content/50">(${esc(t('rankN',sayi(sira(R.D.arasindalik))))})</span></dd>
-    ${T?`<dt class="text-base-content/60">${esc(t('community'))}</dt><dd>${esc(toplulukAd(T.c[i]))}</dd>`:''}</dl>
-    <p class="text-xs text-base-content/60 mt-2">${esc(t('neighborsN',sayi(kom.length)))}</p><p class="text-xs leading-relaxed max-h-20 overflow-auto">${kom.slice(0,40).map(x=>esc(G.ad[x.j])+(G.agirlikli&&x.w!==1?` (${sayi(x.w,Number.isInteger(x.w)?0:2)})`:'')).join(', ')}${kom.length>40?' …':''}</p></div>`;
-  $('#aSecKapat').onclick=()=>{GORUNUM.secili=null;agCiz()}}
+function seciliCiz(){const k=$('#aSecili');if(!k)return;const i=GORUNUM.secili;const G=agG();if(i==null||!G||i>=G.n){k.innerHTML='';return}dugumPaneli(k,i)}
 /* ---------- Ayar paneli ---------- */
 function agAyarCiz(){const p=P(),g=p.gorsel,G=agG();const ozK=p.ozellikler.filter(o=>o.tur==='kat'),ozS=p.ozellikler.filter(o=>o.tur==='sayi');
   const secim=(id,deger,L)=>`<select class="select select-sm w-full" id="${id}">${L.map(([v,a])=>`<option value="${esc(v)}" ${v===deger?'selected':''}>${esc(a)}</option>`).join('')}</select>`;

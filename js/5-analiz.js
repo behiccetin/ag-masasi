@@ -4,7 +4,7 @@ const OB={ver:-1,d:{}};
 function ob(anahtar,fn){if(OB.ver!==S.ver){OB.ver=S.ver;OB.d={}}if(!(anahtar in OB.d))OB.d[anahtar]=fn();return OB.d[anahtar]}
 const agG=()=>ob('G',()=>{const p=P();return p.aktif?agKur(p):null});
 const agOlc=()=>ob('olc',()=>{const G=agG();return G&&G.n?olcumler(G,{yolAgirlik:P().yolAgirlik}):null});
-const agTop=()=>ob('top',()=>{const G=agG();if(!G||!G.m)return null;const o=P().topluluk;return toplulukBul(G,{gamma:o.cozunurluk,tekrar:o.tekrar})});
+const agTop=()=>ob('top',()=>{const G=agG();if(!G||!G.m)return null;const o=P().topluluk;return toplulukBul(G,{gamma:o.cozunurluk,tekrar:o.tekrar,yontem:o.yontem})});
 const agCp=()=>ob('cp',()=>{const G=agG();return G?cekirdekCevre(G,{cpYoksay:P().cekirdek.cpYoksay}):null});
 const agEi=k=>ob('ei:'+k,()=>{const G=agG(),p=P();if(!G||!k)return null;return eiEndeksi(G,p.dugumler.map(d=>d.oz[k]??null))});
 const agUyum=k=>ob('uy:'+k,()=>{const G=agG(),p=P();if(!G||!k)return null;const o=p.ozellikler.find(x=>x.k===k);if(!o)return null;const v=p.dugumler.map(d=>o.tur==='sayi'?sayiOku(d.oz[k]):(d.oz[k]??null));
@@ -50,7 +50,9 @@ function boyutAd(kaynak=P().gorsel.boyut){if(kaynak==='esit')return '';if(kaynak
 const GORUNUM={konum:null,anahtar:'',donusum:{k:1,x:0,y:0},secili:null,arama:'',kalite:null};
 const ALAN_AG={x0:40,y0:56,x1:910,y1:770},ALAN_TAM={x0:40,y0:56,x1:1160,y1:770};
 function yerlesimAnahtar(){const p=P(),g=p.gorsel;return [S.ver_yapi??'',p.aktif,g.yerlesim,g.tohum,g.aciklama,g.renk,agG()?.m].join('|')}
-function yerlesimAl(){const p=P(),g=p.gorsel,G=agG();if(!G)return null;const hk=g.yerlesim==='harita'?JSON.stringify({...g.harita,geo:g.harita.geo?(g.harita.geo.features||[]).length:0}):'';const k=[p.aktif,G.n,G.m,g.yerlesim,g.tohum,g.aciklama?1:0,hk,g.yerlesim==='grup'||g.yerlesim==='daire'||g.yerlesim==='halka'?g.renk+g.boyut:'',yapiParmakIzi()].join('|');
+/* yerleşimin önbellek anahtarı; G verilmezse etkin ağ kullanılır */
+function yerlesimAnahtar(p=P(),G=agG()){const g=p.gorsel;const hk=g.yerlesim==='harita'?JSON.stringify({...g.harita,geo:g.harita.geo?(g.harita.geo.features||[]).length:0}):'';return [p.aktif,G.n,G.m,g.yerlesim,g.tohum,g.aciklama?1:0,hk,g.yerlesim==='grup'||g.yerlesim==='daire'||g.yerlesim==='halka'?g.renk+g.boyut:'',yapiParmakIzi()].join('|')}
+function yerlesimAl(){const p=P(),g=p.gorsel,G=agG();if(!G)return null;const k=yerlesimAnahtar(p,G);
   const yc=()=>{const st=STILLER[g.stil]||STILLER.dergi;const bay=g.bayrak&&COG.d?bayraklar(G,g.yerlesim==='harita'?g.harita.eslesme:'ad').some(Boolean):false;return {st,bay,imza:g.stil+'|'+bay+'|'+g.boyut}};
   if(GORUNUM.konum&&GORUNUM.anahtar===k){const Y=GORUNUM.konum;if(!Y.elle&&['kuvvet','harita','grup'].includes(g.yerlesim)){const c=yc();if(Y.imza!==c.imza){cakismaGider(Y,yaricaplar(boyutDeger(),c.st,c.bay),g.aciklama?ALAN_AG:ALAN_TAM);Y.imza=c.imza}}return Y}const RG=renkGrubu();const alan=g.aciklama?ALAN_AG:ALAN_TAM;
   const Y=g.yerlesim==='harita'&&COG.d?(haritaYerlesim(G,g.harita,alan)||yerlesimHesap(G,'kuvvet',g.tohum,null,boyutDeger(),alan)):yerlesimHesap(G,g.yerlesim==='harita'?'kuvvet':g.yerlesim,g.tohum,RG?RG.grup.map(x=>x??'~'):null,boyutDeger(),alan);
@@ -61,11 +63,13 @@ function yerlesimAl(){const p=P(),g=p.gorsel,G=agG();if(!G)return null;const hk=
 function yapiParmakIzi(){const r=aktifIliski();if(!r)return '';let h=2166136261;for(const [a,b,w] of r.kenarlar){const s=a+'>'+b+':'+w+';';for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}}return (h>>>0).toString(36)+':'+P().dugumler.length+':'+(P().yonlu?1:0)+':'+(P().agirlikli?1:0)}
 
 /* ---------- Ağ çizimi için ortak ayarlar ---------- */
+/* düğüme özel görsel ayarlar (renk, boyut çarpanı, etiket), düğüm sırasına göre; hiçbiri yoksa null */
+function dugumOzelDizi(G){const D=P().gorsel.dugum;if(!D||!G)return null;let var_=false;const L=G.ids.map(id=>{const x=D[id];if(x&&(x.renk||x.boyut||x.etiket)){var_=true;return x}return null});return var_?L:null}
 function agCizimAyar(o={}){const p=P(),g=p.gorsel,G=agG();const RG=renkGrubu();const om=agOmurga();const Gc=om?{...G,E:om.map(k=>G.E[k])}:G;
   return {G:Gc,deger:boyutDeger(),grup:RG?RG.grup:null,ayar:{stil:g.stil,sb:g.sb,etiket:g.etiket,esik:g.esik,egri:g.egri,gri:g.gri,alan:g.alan&&!!RG&&!RG.sirali&&g.yerlesim!=='harita',gad:g.gad&&!!RG&&!RG.sirali,aciklama:g.aciklama,ok:g.ok,
     renkBaslik:RG?RG.baslik:null,grupAd:RG?RG.ad:null,digerAd:t('other'),boyutBaslik:g.boyut==='esit'?null:boyutAd(),bagBaslik:G.agirlikli?t('legendWeight'):null,sayiYaz:v=>sayi(v,Math.abs(v)<10?2:0),
     harita:GORUNUM.konum&&GORUNUM.konum.harita?GORUNUM.konum.katman:null,bayrak:g.bayrak&&COG.d?bayraklar(G,g.yerlesim==='harita'?g.harita.eslesme:'ad'):null,
-    notlar:[t('legendNodes',sayi(G.n),sayi(Gc.E.length))].concat(om?[t('legendBackbone',sayi(om.length),sayi(G.m))]:[]),ozelRenk:(g.renkler||{})[g.renk]||null,altBilgi:g.imzaAcik?'Ağ Masası (Çetin, 2026)':null,baslik:o.baslik,ipucuBaslik:o.ipucu,...o}}}
+    notlar:[t('legendNodes',sayi(G.n),sayi(Gc.E.length))].concat(om?[t('legendBackbone',sayi(om.length),sayi(G.m))]:[]),ozelRenk:(g.renkler||{})[g.renk]||null,dugumOzel:dugumOzelDizi(G),altBilgi:g.imzaAcik?'Ağ Masası (Çetin, 2026)':null,baslik:o.baslik,ipucuBaslik:o.ipucu,...o}}}
 
 /* ---------- Topluluk adları: üyelere bağlı tutulur ----------
    p.topluluk.adlar = [{ad, uye:[düğüm kimlikleri]}]. Yeni bölmede üyeleri Jaccard ≥ 0,5 örtüşen topluluk aynı adı alır. */

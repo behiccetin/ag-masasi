@@ -81,11 +81,11 @@ function yaziGen(m,px,kalin){olcCanvas.font=`${kalin?600:400} ${px}px "Ag Metin"
 /* ---------- Ağ çizimi ----------
    girdi: G (gösterilecek bağlar), P (konumlar), deger (boyut ölçüsü), grup (renk grubu dizisi ya da null), grupAd (grup -> ad), o (ayarlar) */
 function agSvg(G,P,deger,grup,o){let st=STILLER[o.stil]||STILLER.dergi;const sb=!!o.sb,n=G.n,acikla=o.aciklama!==false;const ad=G.ad;const on='s'+Math.random().toString(36).slice(2,8);const bay=o.bayrak&&o.bayrak.some(Boolean)?o.bayrak:null;
-  const mn=Math.min(...deger),mx=Math.max(...deger);const rad=yaricaplar(deger,st,!!bay);
+  const mn=Math.min(...deger),mx=Math.max(...deger);const rad=yaricaplar(deger,st,!!bay);const DO=o.dugumOzel||null;if(DO)DO.forEach((x,i)=>{if(x&&x.boyut&&x.boyut!==1)rad[i]*=x.boyut});
   /* gruplar: en büyük 8 grup renk alır, kalanlar "diğer" */
   let gruplar=[],grIx=new Map();if(grup){const say=new Map();grup.forEach(g=>{if(g!=null&&g!=='')say.set(g,(say.get(g)||0)+1)});gruplar=[...say.entries()].sort((a,b)=>b[1]-a[1]||String(a[0]).localeCompare(String(b[0]),'tr')).map(x=>x[0]);gruplar.slice(0,8).forEach((g,k)=>grIx.set(g,k))}
   if(o.ozelRenk&&!sb){const pal=st.palet.slice();if(grup)gruplar.slice(0,8).forEach((g,k)=>{if(o.ozelRenk[g])pal[k]=o.ozelRenk[g]});else if(o.ozelRenk.__tek)pal[0]=o.ozelRenk.__tek;st={...st,palet:pal}}
-  const SBD=sbDolgu(st);const renk=i=>{if(!grup)return sb?SBD[5]:st.palet[0];const k=grIx.get(grup[i]);if(k==null)return sb?'#a0a0a0':DIGER_RENK;return sb?SBD[k]:st.palet[k]};
+  const SBD=sbDolgu(st);const renk=i=>{if(DO&&DO[i]&&DO[i].renk&&!sb)return DO[i].renk;if(!grup)return sb?SBD[5]:st.palet[0];const k=grIx.get(grup[i]);if(k==null)return sb?'#a0a0a0':DIGER_RENK;return sb?SBD[k]:st.palet[k]};
   const grRenk=k=>sb?'#555':st.palet[k];const alanSag=acikla?930:CW-30;
   let s=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CW} ${CH}" width="${CW}" height="${CH}" font-family="Ag Metin, Helvetica, Arial, sans-serif"><rect width="${CW}" height="${CH}" fill="${st.zemin}"/>`;
   if(o.baslik)s+=`<text x="40" y="34" font-size="18" font-weight="700" fill="${st.yazi}">${esc(o.baslik)}</text>`;
@@ -124,7 +124,7 @@ function agSvg(G,P,deger,grup,o){let st=STILLER[o.stil]||STILLER.dergi;const sb=
   const izg=new Map(),h=40;for(let i=0;i<n;i++){const k=Math.floor(P.x[i]/h)+','+Math.floor(P.y[i]/h);if(!izg.has(k))izg.set(k,[]);izg.get(k).push(i)}
   const carp=b=>{if(kutu.some(k=>b.x0<k.x1&&b.x1>k.x0&&b.y0<k.y1&&b.y1>k.y0))return true;if(b.x0<6||b.x1>alanSag+40||b.y0<6||b.y1>CH-6)return true;
     for(let gx=Math.floor((b.x0-20)/h);gx<=Math.floor((b.x1+20)/h);gx++)for(let gy=Math.floor((b.y0-20)/h);gy<=Math.floor((b.y1+20)/h);gy++){const L=izg.get(gx+','+gy);if(!L)continue;for(const j of L){const cx=Math.max(b.x0,Math.min(P.x[j],b.x1)),cy=Math.max(b.y0,Math.min(P.y[j],b.y1));if(Math.hypot(P.x[j]-cx,P.y[j]-cy)<rad[j]-.5)return true}}return false};
-  const etL=sira.slice(0,K);(o.zorunluEtiket||[]).forEach(i=>{if(!etL.includes(i))etL.unshift(i)});
+  let etL=sira.slice(0,K);if(DO){etL=etL.filter(i=>!(DO[i]&&DO[i].etiket==='gizle'));sira.forEach(i=>{if(DO[i]&&DO[i].etiket==='goster'&&!etL.includes(i))etL.unshift(i)})}(o.zorunluEtiket||[]).forEach(i=>{if(!etL.includes(i)&&!(DO&&DO[i]&&DO[i].etiket==='gizle'))etL.unshift(i)});
   etL.forEach(i=>{const m=ad[i],kal=rad[i]>st.rmax*.6,w=yaziGen(m,px,kal),hh=px*1.15,of=rad[i]+3;
     const aday=[[P.x[i]+of,P.y[i]-hh/2],[P.x[i]-of-w,P.y[i]-hh/2],[P.x[i]-w/2,P.y[i]-of-hh],[P.x[i]-w/2,P.y[i]+of]];const yer=aday.find(([x,y])=>!carp({x0:x-1,y0:y-1,x1:x+w+1,y1:y+hh+1}));if(!yer){gizli++;return}
     const [x,y]=yer;kutu.push({x0:x-1,y0:y-1,x1:x+w+1,y1:y+hh+1});s+=`<text class="et" data-i="${i}" x="${x.toFixed(1)}" y="${(y+hh*.8).toFixed(1)}" font-size="${px}" font-weight="${kal?600:400}" fill="${st.yazi}" stroke="${st.zemin}" stroke-width="3" stroke-linejoin="round" paint-order="stroke">${esc(m)}</text>`});

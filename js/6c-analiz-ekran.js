@@ -58,12 +58,16 @@ function cizGrup(){const p=P(),G=agG();const k=$('#s-grup');if(!G||!G.m){k.inner
       ${E?`<p class="text-sm text-base-content/75 mt-4 max-w-3xl">${esc(eiYorum(E,oz.ad))}</p><div class="overflow-x-auto mt-4"><table class="stablo"><thead><tr><th>${esc(oz.ad)}</th><th class="n">${esc(t('tiesInside'))}</th><th class="n">${esc(t('tiesOutside'))}</th><th class="n">E-I</th></tr></thead><tbody>${E.grupEI.sort((a,b)=>(a.ei??9)-(b.ei??9)).map(g=>`<tr><td>${esc(g.g)}</td><td class="n">${sayi(g.I)}</td><td class="n">${sayi(g.E)}</td><td class="n">${g.ei==null?'-':sayi(g.ei,3)}</td></tr>`).join('')}</tbody></table></div>`:''}`}
   k.innerHTML=`<div class="max-w-7xl mx-auto px-4 sm:px-8 py-8 w-full space-y-8">${bolumBas('tabGroups','grupSekme',t('groupsLead'))}
     <section><div class="flex flex-wrap items-end gap-4 mb-4"><h2 class="text-xl font-bold flex items-center gap-1 mr-auto">${esc(t('communities'))}${ip('louvain')}</h2>
-      <label class="text-sm flex items-center gap-2">${esc(t('resolution'))} γ${ip('cozunurluk')}<input type="number" step="0.1" min="0.1" max="5" class="input input-sm w-20" id="gGam" value="${p.topluluk.cozunurluk}"></label>
+      <label class="text-sm flex items-center gap-2">${esc(t('method'))}${ip('topYontem')}<select class="select select-sm w-64" id="gYon" title="${esc(tAlt('topYontemAcik',T?T.yontem:'louvain'))}">${yontemSecenek(G,T?T.yontem:'louvain')}</select></label>
+      <label class="text-sm flex items-center gap-2">${esc(t('resolution'))} γ${ip('cozunurluk')}<input type="number" step="0.1" min="0.1" max="5" class="input input-sm w-20" id="gGam" value="${p.topluluk.cozunurluk}" ${T&&T.yontem==='infomap'?'disabled':''}></label>
       <label class="text-sm flex items-center gap-2">${esc(t('runs'))}${ip('tekrar')}<input type="number" step="10" min="1" max="200" class="input input-sm w-20" id="gTek" value="${p.topluluk.tekrar}"></label></div>
       ${T?`<dl class="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-6"><div class="border-t border-base-content/80 pt-2"><dt class="text-xs text-base-content/70">${esc(t('nCommunities'))}</dt><dd class="dar text-3xl font-bold">${kayan('g:k',sayi(T.k))}</dd></div>
-        <div class="border-t border-base-content/80 pt-2"><dt class="text-xs text-base-content/70 flex items-center gap-0.5">${esc(t('modularity'))} Q${ip('modulerlik')}</dt><dd class="dar text-3xl font-bold">${kayan('g:q',sayi(T.Q,3))}</dd></div>
+        <div class="border-t border-base-content/80 pt-2"><dt class="text-xs text-base-content/70 flex items-center gap-0.5">${esc(t('modularity'))} Q${T.yontem!=='louvain'&&G.yonlu?' ('+esc(t('directedShort'))+')':''}${ip('modulerlik')}</dt><dd class="dar text-3xl font-bold">${kayan('g:q',sayi(T.Q,3))}</dd></div>
         <div class="border-t border-base-content/80 pt-2"><dt class="text-xs text-base-content/70 flex items-center gap-0.5">${esc(t('qRange'))}${ip('qAralik')}</dt><dd class="dar text-3xl font-bold">${sayi(T.Qaralik[0],3)} - ${sayi(T.Qaralik[1],3)}</dd></div>
-        <div class="border-t border-base-content/80 pt-2"><dt class="text-xs text-base-content/70 flex items-center gap-0.5">${esc(t('meanStability'))}${ip('kararlilik')}</dt><dd class="dar text-3xl font-bold">${sayi(ortala(T.kararlilik),3)}</dd></div></dl>
+        <div class="border-t border-base-content/80 pt-2"><dt class="text-xs text-base-content/70 flex items-center gap-0.5">${esc(t('meanStability'))}${ip('kararlilik')}</dt><dd class="dar text-3xl font-bold">${sayi(ortala(T.kararlilik),3)}</dd></div>
+        ${T.yontem==='infomap'?`<div class="border-t border-base-content/80 pt-2"><dt class="text-xs text-base-content/70 flex items-center gap-0.5">${esc(t('codeLength'))}${ip('haritaDenklemi')}</dt><dd class="dar text-3xl font-bold">${sayi(T.L,3)}</dd></div>
+        <div class="border-t border-base-content/80 pt-2"><dt class="text-xs text-base-content/70 flex items-center gap-0.5">${esc(t('codeLength1'))}${ip('haritaDenklemi')}</dt><dd class="dar text-3xl font-bold">${sayi(T.L1,3)}</dd></div>`:''}</dl>
+        ${G.yonlu&&T.yontem==='louvain'?`<div class="mb-4 max-w-3xl">${uyari(t('dirIgnored'))}</div>`:''}
         <p class="text-sm text-base-content/75 mb-4 max-w-3xl">${esc(toplulukYorum(T))}</p>${topT}
         ${nmiL.length?`<div class="mt-4 text-sm"><h3 class="font-semibold flex items-center gap-1">${esc(t('nmiTitle'))}${ip('nmi')}</h3><ul class="mt-1 flex flex-wrap gap-x-6">${nmiL.map(([a,v])=>`<li>${esc(a)}: <b class="rakam">${sayi(v,3)}</b></li>`).join('')}</ul></div>`:''}
         <div class="mt-4 flex gap-2"><button class="btn btn-sm" id="gRenkle">${esc(t('colorByCommunities'))}</button><button class="btn btn-sm" id="gOzYaz">${esc(t('saveAsAttribute'))}</button>${ip('toplulukOzellik')}</div>`:uyari(t('noCommunities'))}</section>
@@ -72,6 +76,9 @@ function cizGrup(){const p=P(),G=agG();const k=$('#s-grup');if(!G||!G.m){k.inner
   bagla();kayanOynat();
   $$('[data-tad]').forEach(e=>e.onchange=()=>islem(()=>toplulukAdKoy(+e.dataset.tad,e.value)));
   const gm=$('#gGam');if(gm)gm.onchange=()=>{const v=Math.min(5,Math.max(.1,sayiOku(gm.value)||1));islem(()=>{p.topluluk.cozunurluk=v})};
+  const gy=$('#gYon');if(gy){gy.onchange=()=>islem(()=>{p.topluluk.yontem=gy.value});
+    /* fare üzerine gelince (onmouseover) seçeneğin kısa açıklaması; başlık, seçili yönteme göre güncel kalır */
+    [...gy.options].forEach(o=>o.title=tAlt('topYontemAcik',o.value));gy.onmouseover=()=>{gy.title=tAlt('topYontemAcik',gy.value)}}
   const tk=$('#gTek');if(tk)tk.onchange=()=>{const v=Math.min(200,Math.max(1,Math.round(sayiOku(tk.value)||30)));islem(()=>{p.topluluk.tekrar=v})};
   const go=$('#gOz');if(go)go.onchange=()=>{GRUP_GORUNUM.oz=go.value;p.ei.oz=go.value;kaydet();ciz()};
   const rr=$('#gRenkle');if(rr)rr.onclick=()=>{islem(()=>{p.gorsel.renk='topluluk'});sekmeAc('ag')};
@@ -80,7 +87,10 @@ function cizGrup(){const p=P(),G=agG();const k=$('#s-grup');if(!G||!G.m){k.inner
 const pYaz=p=>p<0.001?'< '+sayi(0.001,3):sayi(p,3);
 const pMetin=p=>p<0.001?'p < '+sayi(0.001,3):'p = '+sayi(p,3);
 function eiYorum(E,ad){const yon=E.ei<E.beklenen?'az':'cok';const p=yon==='az'?E.pKucuk:E.pBuyuk;return t(p<0.05?(yon==='az'?'eiInterpHomo':'eiInterpHetero'):'eiInterpNone',ad,sayi(E.ei,3),sayi(E.beklenen,3),pMetin(p))}
-function toplulukYorum(T){const Q=T.Q;const m=Q>=0.3?'qStrong':Q>=0.15?'qModerate':'qWeak';return t(m,sayi(T.k),sayi(Q,3))+' '+(ortala(T.kararlilik)<0.7?t('stabLow'):t('stabHigh'))}
+/* Yöntem seçenekleri; yönlü Louvain yalnız yönlü ağda sunulur */
+function yontemSecenek(G,sec){const L=[['louvain','mLouvain'],...(G.yonlu?[['dlouvain','mDLouvain']]:[]),['leiden','mLeiden'],['infomap','mInfomap']];
+  return L.map(([k,a])=>`<option value="${k}" title="${esc(tAlt('topYontemAcik',k))}" ${k===sec?'selected':''}>${esc(t(a))}</option>`).join('')}
+function toplulukYorum(T){if(T.yontem==='infomap'&&T.k===1)return t('infomapSingle');const Q=T.Q;const m=Q>=0.3?'qStrong':Q>=0.15?'qModerate':'qWeak';return t(m,sayi(T.k),sayi(Q,3))+' '+(ortala(T.kararlilik)<0.7?t('stabLow'):t('stabHigh'))}
 
 /* ====================== YAPI SEKMESİ ====================== */
 function cizYapi(){const p=P(),G=agG();const k=$('#s-yapi');if(!G||!G.m){k.innerHTML=`<div class="max-w-5xl mx-auto px-4 sm:px-8 py-8 w-full">${bolumBas('tabStructure','yapiSekme',t('structureLead'))}${agYok()}</div>`;bagla();return}

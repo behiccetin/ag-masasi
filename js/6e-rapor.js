@@ -1,7 +1,9 @@
 /* ====================== ATIF ====================== */
 const DEPO='https://github.com/behiccetin/ag-masasi';
-const DOI='10.5281/zenodo.24262476';
+/* DOI_SURUM: bu sürümün Zenodo DOI'si (sürüm GitHub'da yayımlanıp Zenodo DOI verince yazılır). Boşken atıf, bütün sürümleri kapsayan DOI'yi kullanır. */
+const DOI_SURUM='';
 const DOI_TUM='10.5281/zenodo.24262475';
+const DOI=DOI_SURUM||DOI_TUM;
 const KAYNAK_URL=DOI?'https://doi.org/'+DOI:DEPO;
 function atifMetinleri(){const y=ga('atif','yazilim'),sv=ga('atif','surum'),yay=DOI?'Zenodo. ':'';
   const ad=S.dil==='tr'?'Ağ Masası':'Ağ Masası (Ag Masasi)';
@@ -9,7 +11,7 @@ function atifMetinleri(){const y=ga('atif','yazilim'),sv=ga('atif','surum'),yay=
     isnad:`Çetin, Behiç. ${ad}. ${sv} ${SURUM}. ${y}. ${DOI?'Zenodo, ':''}2026. ${KAYNAK_URL}`,
     bibtex:`@software{cetin2026agmasasi,\n  author = {{\\c{C}}etin, Beh{\\c{c}}},\n  title = {A{\\u{g}} Masas{\\i} (Ag Masasi)},\n  year = {2026},\n  version = {${SURUM}},${DOI?'\n  publisher = {Zenodo},':''}\n  url = {${KAYNAK_URL}}${DOI?`,\n  doi = {${DOI}}`:''}\n}`}}
 function doiSatiri(){if(!DOI)return '';const l=(d,ad)=>`<a class="link link-primary" href="https://doi.org/${d}" target="_blank" rel="noopener noreferrer">${esc(d)}</a><span class="text-base-content/60"> ${esc(ad)}</span>`;
-  return `<div class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm"><span><span class="badge badge-primary badge-sm mr-2">DOI</span>${l(DOI,ga('atif','buSurum').replace('{0}',SURUM))}</span>${DOI_TUM?`<span>${l(DOI_TUM,ga('atif','tumSurum'))}</span>`:''}</div>`}
+  return `<div class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm"><span><span class="badge badge-primary badge-sm mr-2">DOI</span>${DOI_SURUM?l(DOI_SURUM,ga('atif','buSurum').replace('{0}',SURUM)):l(DOI_TUM,ga('atif','tumSurum'))}</span>${DOI_SURUM&&DOI_TUM?`<span>${l(DOI_TUM,ga('atif','tumSurum'))}</span>`:''}</div>`}
 function atifPencere(){const a=atifMetinleri();const blok=(k,v)=>`<div class="mt-4"><div class="flex items-center justify-between"><h4 class="text-sm font-semibold">${esc(ga('atif',k))}</h4><button class="btn btn-xs" data-kop="${k}">${esc(ga('atif','kopyala'))}</button></div><pre class="mt-1 bg-base-200 rounded-field p-3 text-sm whitespace-pre-wrap break-words">${esc(v)}</pre></div>`;
   pencere(ga('atif','baslik'),`<p class="text-sm text-base-content/75">${esc(ga('atif','ne'))}</p>${doiSatiri()}${blok('apa',a.apa)}${blok('isnad',a.isnad)}${blok('bibtex',a.bibtex)}`,null,{acilinca:()=>$$('[data-kop]').forEach(b=>b.onclick=()=>kopyala(a[b.dataset.kop]))})}
 
@@ -30,6 +32,10 @@ const KAYNAK={
   tarjan1972:'Tarjan, R. (1972). Depth-first search and linear graph algorithms. SIAM Journal on Computing, 1(2), 146-160. https://doi.org/10.1137/0201010',
   newman2002:'Newman, M. E. J. (2002). Assortative mixing in networks. Physical Review Letters, 89(20), 208701. https://doi.org/10.1103/PhysRevLett.89.208701',
   newman2003:'Newman, M. E. J. (2003). Mixing patterns in networks. Physical Review E, 67(2), 026126. https://doi.org/10.1103/PhysRevE.67.026126',
+  leicht2008:'Leicht, E. A., & Newman, M. E. J. (2008). Community structure in directed networks. Physical Review Letters, 100(11), 118703. https://doi.org/10.1103/PhysRevLett.100.118703',
+  traag2019:'Traag, V. A., Waltman, L., & van Eck, N. J. (2019). From Louvain to Leiden: Guaranteeing well-connected communities. Scientific Reports, 9, 5233. https://doi.org/10.1038/s41598-019-41695-z',
+  rosvall2008:'Rosvall, M., & Bergstrom, C. T. (2008). Maps of random walks on complex networks reveal community structure. Proceedings of the National Academy of Sciences, 105(4), 1118-1123. https://doi.org/10.1073/pnas.0706851105',
+  dugue2015:'Dugué, N., & Perez, A. (2015). Directed Louvain: Maximizing modularity in directed networks [Research report]. Université d\'Orléans. https://hal.science/hal-01231784',
   blondel2008:'Blondel, V. D., Guillaume, J.-L., Lambiotte, R., & Lefebvre, E. (2008). Fast unfolding of communities in large networks. Journal of Statistical Mechanics: Theory and Experiment, 2008(10), P10008. https://doi.org/10.1088/1742-5468/2008/10/P10008',
   newman2004:'Newman, M. E. J., & Girvan, M. (2004). Finding and evaluating community structure in networks. Physical Review E, 69(2), 026113. https://doi.org/10.1103/PhysRevE.69.026113',
   reichardt2006:'Reichardt, J., & Bornholdt, S. (2006). Statistical mechanics of community detection. Physical Review E, 74(1), 016110. https://doi.org/10.1103/PhysRevE.74.016110',
@@ -54,7 +60,7 @@ const KAYNAK={
   noack2007:'Noack, A. (2007). Energy models for graph clustering. Journal of Graph Algorithms and Applications, 11(2), 453-480. https://doi.org/10.7155/jgaa.00154'};
 /* metin içi atıf adları */
 const ATIF_AD={wasserman1994:'Wasserman ve Faust, 1994',freeman1978:'Freeman, 1978',brandes2001:'Brandes, 2001',newman2001:'Newman, 2001',marchiori2000:'Marchiori ve Latora, 2000',bonacich1972:'Bonacich, 1972',page1999:'Page vd., 1999',kleinberg1999:'Kleinberg, 1999',
-  batagelj2003:'Batagelj ve Zaveršnik, 2003',watts1998:'Watts ve Strogatz, 1998',burt1992:'Burt, 1992',hopcroft1973:'Hopcroft ve Tarjan, 1973',tarjan1972:'Tarjan, 1972',newman2002:'Newman, 2002',newman2003:'Newman, 2003',blondel2008:'Blondel vd., 2008',newman2004:'Newman ve Girvan, 2004',
+  batagelj2003:'Batagelj ve Zaveršnik, 2003',watts1998:'Watts ve Strogatz, 1998',burt1992:'Burt, 1992',hopcroft1973:'Hopcroft ve Tarjan, 1973',tarjan1972:'Tarjan, 1972',newman2002:'Newman, 2002',newman2003:'Newman, 2003',blondel2008:'Blondel vd., 2008',leicht2008:'Leicht ve Newman, 2008',traag2019:'Traag vd., 2019',rosvall2008:'Rosvall ve Bergstrom, 2008',dugue2015:'Dugué ve Perez, 2015',newman2004:'Newman ve Girvan, 2004',
   reichardt2006:'Reichardt ve Bornholdt, 2006',danon2005:'Danon vd., 2005',krackhardt1988s:'Krackhardt ve Stern, 1988',borgatti2000:'Borgatti ve Everett, 2000',batagelj2001:'Batagelj ve Mrvar, 2001',humphries2008:'Humphries ve Gurney, 2008',maslov2002:'Maslov ve Sneppen, 2002',
   schneider2011:'Schneider vd., 2011',krackhardt1988:'Krackhardt, 1988',dekker2007:'Dekker vd., 2007',serrano2009:'Serrano vd., 2009',jacomy2014:'Jacomy vd., 2014',cetin2023:'Çetin ve Filiz, 2023',anderson1999:'Anderson vd., 1999',filiz2026:'Filiz ve Çetin, 2026',ngosbp:'NGO Shipbreaking Platform, 2024',guimera2004:'Guimerà vd., 2004',borgatti2018:'Borgatti vd., 2018',comtrade:'United Nations, 2026',noack2007:'Noack, 2007'};
 const atf=(...k)=>'('+k.map(x=>{const a=ATIF_AD[x];return S.dil==='tr'?a:a.replace(' ve ',' & ').replace(' vd.',' et al.')}).join('; ')+')';
@@ -71,8 +77,13 @@ function yontemMetni(){const p=P(),G=agG(),R=agOlc();const g=k=>ga('yontem',k);i
   let p2=doldur(g('merkez'),{liste:liste(ml)});if(G.agirlikli)p2+=' '+(p.yolAgirlik?doldur(g('yolAgirlikli'),{atif:atf('newman2001')}):g('yolAgirliksiz'));if(p.yolAgirlik&&G.agirlikli)kay.add('newman2001');
   p2+=' '+doldur(g('yapiOlcu'),{a1:atf('batagelj2003'),a2:atf('watts1998'),a3:atf('burt1992'),a4:atf('hopcroft1973')});['batagelj2003','watts1998','burt1992','hopcroft1973'].forEach(x=>kay.add(x));
   if(A.dereceUyumu!=null){p2+=' '+doldur(g('uyum'),{r:sayi(A.dereceUyumu,3),atif:atf('newman2002')});kay.add('newman2002')}o.push(p2);
-  const T=agTop();if(T){let p3=doldur(g('topluluk'),{a1:atf('blondel2008'),a2:atf('newman2004'),gam:sayi(T.gamma,2),R:sayi(T.tekrar),k:sayi(T.k),q:sayi(T.Q,3),q0:sayi(T.Qaralik[0],3),kar:sayi(ortala(T.kararlilik),3)});kay.add('blondel2008');kay.add('newman2004');
-    if(T.gamma!==1){p3+=' '+doldur(g('gamma'),{atif:atf('reichardt2006')});kay.add('reichardt2006')}const oz=p.ozellikler.find(x=>x.k===p.ei.oz&&x.tur==='kat');
+  const T=agTop();if(T){const yon=T.yontem,yl=G.yonlu;const pr={gam:sayi(T.gamma,2),R:sayi(T.tekrar),k:sayi(T.k),q:sayi(T.Q,3),q0:sayi(T.Qaralik[0],3),kar:sayi(ortala(T.kararlilik),3),L:sayi(T.L??0,3),L1:sayi(T.L1??0,3)};let p3,gk=[];
+    if(yon==='louvain'){p3=doldur(g('topluluk'),{...pr,a1:atf('blondel2008'),a2:atf('newman2004')});gk=['blondel2008','newman2004']}
+    else if(yon==='dlouvain'){p3=doldur(g('toplulukDLouvain'),{...pr,a1:atf('dugue2015'),a2:atf('leicht2008')});gk=['dugue2015','leicht2008']}
+    else if(yon==='leiden'){p3=doldur(g('toplulukLeiden'),{...pr,modad:g(yl?'modYonlu':'modYonsuz'),a1:atf('traag2019'),a2:atf(yl?'leicht2008':'newman2004')});gk=['traag2019',yl?'leicht2008':'newman2004']}
+    else{p3=doldur(g('toplulukInfomap'),{...pr,yurus:g(yl?'infomapYurusYonlu':'infomapYurusYonsuz'),a1:atf('rosvall2008')});gk=['rosvall2008']}
+    gk.forEach(x=>kay.add(x));
+    if(T.gamma!==1&&yon!=='infomap'){p3+=' '+doldur(g('gamma'),{atif:atf('reichardt2006')});kay.add('reichardt2006')}const oz=p.ozellikler.find(x=>x.k===p.ei.oz&&x.tur==='kat');
     if(oz){const v=p.dugumler.map(d=>d.oz[oz.k]);const ix=v.map((x,i)=>i).filter(i=>v[i]!=null&&v[i]!=='');if(ix.length>1){p3+=' '+doldur(g('nmi'),{oz:oz.ad,v:sayi(nmi(ix.map(i=>T.c[i]),ix.map(i=>v[i])),3),atif:atf('danon2005')});kay.add('danon2005')}}o.push(p3)}
   const oz=p.ozellikler.find(x=>x.k===p.ei.oz&&x.tur==='kat');if(oz){const E=agEi(oz.k),U=agUyum(oz.k);if(E){o.push(doldur(g('ei'),{oz:oz.ad,ei:sayi(E.ei,3),bek:sayi(E.beklenen,3),perm:sayi(E.perm),p:pMetin(E.ei<E.beklenen?E.pKucuk:E.pBuyuk),r:U&&U.r!=null?sayi(U.r,3):'-',a1:atf('krackhardt1988s'),a2:atf('newman2003')}));kay.add('krackhardt1988s');kay.add('newman2003')}}
   const C=agCp();if(C){o.push(doldur(g('cp'),{atif:atf('borgatti2000'),f:sayi(C.uyum,3),nc:sayi(C.nc),n:sayi(G.n),cc:sd(C.yogunluk.cc,3),pp:sd(C.yogunluk.pp,3),mod:C.cpYoksay?g('cpYoksay'):g('cpBir')}));kay.add('borgatti2000')}
@@ -143,6 +154,6 @@ function xlsxRapor(){const p=P(),G=agG(),R=agOlc(),T=agTop(),C=agCp();const L=ol
   const S2=[{h:[t('measure'),t('value')],kalin:1},...AG_OZET.filter(([k,,y])=>!y||G.yonlu).map(([k])=>({h:[tAlt('agOlcu',k),R.A[k]??''],ilkKalin:1}))];
   const ad=new Map(p.dugumler.map(d=>[d.id,d.ad]));const S3=[{h:[p.yonlu?t('source'):t('nodeA'),p.yonlu?t('target'):t('nodeB'),t('weight')],kalin:1},...G.E.map(e=>({h:[G.ad[e.s],G.ad[e.t],e.w]}))];void ad;
   const sayfa=[{ad:t('nodes'),satirlar:S1},{ad:t('netLevel'),satirlar:S2},{ad:t('ties'),satirlar:S3}];
-  if(T)sayfa.push({ad:t('communities'),satirlar:[{h:[t('community'),t('size'),t('stability')],kalin:1},...T.boyut.map((s,c)=>({h:[toplulukAd(c),s,T.toplulukKararlilik[c]]})),[],[t('modularity')+' Q',T.Q],['γ',T.gamma],[t('runs'),T.tekrar]]});
+  if(T)sayfa.push({ad:t('communities'),satirlar:[{h:[t('community'),t('size'),t('stability')],kalin:1},...T.boyut.map((s,c)=>({h:[toplulukAd(c),s,T.toplulukKararlilik[c]]})),[],...(T.yontem!=='louvain'?[[t('method'),t({dlouvain:'mDLouvain',leiden:'mLeiden',infomap:'mInfomap'}[T.yontem])]]:[]),[t('modularity')+' Q',T.Q],...(T.yontem==='infomap'?[['L ('+'bit)',T.L],['L1 (bit)',T.L1]]:[['γ',T.gamma]]),[t('runs'),T.tekrar]]});
   const Q=agir('qap');if(Q){const Z=[{h:[t('predictor'),'r','p (≥)','p (≤)',t('pTwo')],kalin:1},...Q.tek.filter(x=>x.r).map(x=>({h:[x.ad,x.r.r,x.r.pUst,x.r.pAlt,x.r.p]}))];if(Q.mr){Z.push([]);Z.push({h:[t('predictor'),'b','β',t('pPerm')],kalin:1});Z.push([t('intercept'),Q.mr.b[0]]);Q.adlar.forEach((a,i)=>Z.push([a,Q.mr.b[i+1],Q.mr.beta[i]??'',Q.mr.p[i]]));Z.push(['R²',Q.mr.R2])}sayfa.push({ad:'QAP',satirlar:Z})}
   return xlsxYap(sayfa)}

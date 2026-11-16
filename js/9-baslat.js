@@ -36,8 +36,8 @@ async function dilYukle(){const f=await dosyaOku('.json');if(!f)return;try{const
   dilDegis(j._kod);const eksik=Object.keys(DILLER.en).filter(k=>temiz[k]===undefined).length;tost(t('langLoaded',j._ad)+(eksik?' '+t('langMissing',eksik):''))}catch(e){tost(e.message||t('langBad'),'error')}}
 const ARAC={
   yeni:async()=>{if(P().dugumler.length&&!(await sor(t('newProjectQ'),t('newProject'),1)))return;once();S.P=bosProje();S.ver++;GORUNUM.konum=null;kaydet();sekmeAc('veri')},
-  ac:async()=>{const f=await dosyaOku('.json,application/json');if(!f)return;try{const p=JSON.parse(await f.text());if(p.tur!=='ag-masasi')throw 0;once();S.P=projeDuzelt(p);S.ver++;GORUNUM.konum=null;kaydet();sekmeAc(P().dugumler.length?'ag':'veri');tost(t('projectLoaded'))}catch(e){tost(t('badProject'),'error')}},
-  kaydet:projeIndir,ornek:ornekYukle,ice:()=>icePencere(),disa:disaPencere,ayarlar:ayarPencere,gunluk:gunlukPencere,atif:atifPencere,dilSablon,dilYukle,
+  ac:()=>oturumAc(),
+  kaydet:oturumKaydet,ornek:ornekYukle,ice:()=>icePencere(),disa:disaPencere,ayarlar:ayarPencere,gunluk:gunlukPencere,atif:atifPencere,dilSablon,dilYukle,
   excel:()=>{if(!agG()){tost(t('noNetwork'),'warning');return}indir(dosyaAd(P().ad)+'-sonuclar.xlsx',xlsxRapor());tost(t('downloaded'))}};
 
 /* ====================== OLAYLAR ====================== */
@@ -67,7 +67,7 @@ addEventListener('dragover',e=>e.preventDefault());addEventListener('drop',e=>e.
 
 /* ====================== KISALTMALAR: üzerine gelince açıklama ======================
    QAP, MRQAP gibi kısaltmalar metinde olduğu gibi kalır; fareyle üzerine gelince ya da odaklanınca dile göre tam adı ve kısa tanımı görünür. */
-const KISA_RE=/(?<![\w-])(MRQAP|QAP|E-I|NMI|HITS|GEXF|Louvain|PageRank|ForceAtlas2|LinLog|[Aa]sortativite|[Aa]ssortativity|[Hh]omofili|[Hh]omophily)(?![\wçğıöşüÇĞİÖŞÜ-])/g;
+const KISA_RE=/(?<![\w-])(MRQAP|QAP|E-I|NMI|HITS|GEXF|Louvain|Infomap|Leiden|Leicht-Newman|[Mm]odülerlik|[Mm]odularity|[Hh]arita denklemi|[Mm]ap equation|PageRank|ForceAtlas2|LinLog|[Aa]sortativite|[Aa]ssortativity|[Hh]omofili|[Hh]omophily)(?![\wçğıöşüÇĞİÖŞÜ-])/g;
 const kisaAnah=x=>x.charAt(0).toUpperCase()+x.slice(1);
 function kisaltmaIsle(kok){const tan=t('kisaltma');if(!tan||typeof tan!=='object')return;const yuru=document.createTreeWalker(kok,NodeFilter.SHOW_TEXT,{acceptNode:n=>{const e=n.parentElement;if(!e||e.closest('svg,abbr,input,textarea,select,option,script,style,pre,code,#ipucuKutu'))return NodeFilter.FILTER_REJECT;KISA_RE.lastIndex=0;return KISA_RE.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT}});
   const L=[];while(yuru.nextNode())L.push(yuru.currentNode);for(const n of L){const s=n.nodeValue;const f=document.createDocumentFragment();let son=0;KISA_RE.lastIndex=0;let m;

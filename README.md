@@ -12,13 +12,19 @@ A free, install-free, browser-based tool for social network analysis. It reads e
 
 **Ağ ölçüleri / Network measures (14):** yoğunluk, ortalama derece, bileşenler, ortalama uzaklık, çap, geçişlilik, ortalama kümelenme, karşılıklılık, derece uyumu, Freeman merkezileşmesi.
 
-**Gruplar ve yapı / Groups and structure:** Louvain toplulukları (çözünürlük, çok koşu, kararlılık), NMI, E-I endeksi ve permütasyon testi, kategorik ve sayısal uyum, Borgatti-Everett çekirdek-çevre modeli, kesme noktaları ve köprüler, triad ve diad sayımı, küçük dünya σ, hedefli ve rastgele düğüm kaybında dayanıklılık (R endeksi), eşitsizlik süzgeciyle omurga.
+**Gruplar ve yapı / Groups and structure:** topluluklar (Louvain, yönlü Louvain/Leicht-Newman, Leiden, Infomap; çözünürlük, çok koşu, kararlılık), NMI, E-I endeksi ve permütasyon testi, kategorik ve sayısal uyum, Borgatti-Everett çekirdek-çevre modeli, kesme noktaları ve köprüler, triad ve diad sayımı, küçük dünya σ, hedefli ve rastgele düğüm kaybında dayanıklılık (R endeksi), eşitsizlik süzgeciyle omurga.
 
 **Testler / Tests:** QAP korelasyonu, çift yarı kısmi permütasyonlu MRQAP, rastgele ağlarla karşılaştırma (koşullu tek biçimli çizge testi; yoğunluğu ya da derece dizisini koruyan), düğüm düzeyinde permütasyon testi (F ve η², Pearson r), asortativite testi (Newman), modülerliğin anlamlılığı (derece dizisini koruyan rastgele ağlarla). Her testin formülü arayüzde gösterilir.
 
 ## Çizim / Drawing
 
 ForceAtlas2 ailesinden LinLog kuvvet yerleşimi (büyük ağlarda Barnes-Hut), çakışmayan etiket yerleşimi, grup alanları, renk körlüğüne uygun palet, siyah-beyaz baskı için şekiller, dergi, sunum, poster ve koyu biçemler, 600 dpi PNG, SVG ve etkileşimli HTML.
+
+## Ağ üzerinde düzenleme ve kaydetme / Editing on the network and saving
+
+Ağ sekmesinde bir düğüme tıklayınca açılan kartta düğümün adı ve özellikleri düzenlenir, yalnız o düğüme özel renk, boyut ve etiket verilir, bağ eklenir ya da silinir, düğüm silinir (Delete tuşu da çalışır). Bütün değişiklikler geri alınabilir; bağ eklenip silindiğinde öteki düğümler yerinde kalır. **Kaydet** (Ctrl+S) verileri ve çalışma ortamını (açık sekme, yakınlaştırma, seçili düğüm, sekme ayarları, hesaplanmış test sonuçları, son 30 geri alma adımı) tek bir `.agm` dosyasına indirir; dosya açılınca ya da sayfaya sürüklenince kalınan yerden sürülür. Eski `.ag.json` proje dosyaları da açılır.
+
+Clicking a node in the Network tab opens a card for editing its name and attributes, giving it its own colour, size and label, adding or deleting ties and deleting the node (the Delete key also works). All changes can be undone; other nodes keep their place when ties change. **Save** (Ctrl+S) downloads the data and the workspace (open tab, zoom, selected node, tab settings, computed test results, last 30 undo steps) as a single `.agm` file; opening it or dropping it on the page continues where you left off. Older `.ag.json` project files also open.
 
 ## Harita ve bayraklar / Maps and flags
 
@@ -61,9 +67,11 @@ Web sürümü de verileri yalnızca tarayıcınızda tutar. / The web version al
 
 Ağ Masası'nı kullandıysanız lütfen kaynak gösterin. Araçtaki **Atıf** penceresi APA, İSNAD ve BibTeX biçimlerini verir.
 
-Çetin, B. (2026). *Ağ Masası (Ag Masasi)* (Sürüm 1.0.0) [Bilgisayar yazılımı]. Zenodo. https://doi.org/10.5281/zenodo.24262476
+Çetin, B. (2026). *Ağ Masası (Ag Masasi)* (Sürüm 1.1.0) [Bilgisayar yazılımı]. Zenodo. https://doi.org/10.5281/zenodo.24262475
 
-Bütün sürümler için / For all versions: https://doi.org/10.5281/zenodo.24262475
+Bu DOI bütün sürümleri kapsar ve en yeni sürümü açar. Sürüm 1.0.0: https://doi.org/10.5281/zenodo.24262476
+
+This DOI covers all versions and resolves to the latest. Version 1.0.0: https://doi.org/10.5281/zenodo.24262476
 
 ## Lisans / License
 
