@@ -7,9 +7,9 @@ const DOI=DOI_SURUM||DOI_TUM;
 const KAYNAK_URL=DOI?'https://doi.org/'+DOI:DEPO;
 function atifMetinleri(){const y=ga('atif','yazilim'),sv=ga('atif','surum'),yay=DOI?'Zenodo. ':'';
   const ad=S.dil==='tr'?'Ağ Masası':'Ağ Masası (Ag Masasi)';
-  return {apa:`Çetin, B. (2026). ${ad} (${sv} ${SURUM}) [${y}]. ${yay}${KAYNAK_URL}`,
-    isnad:`Çetin, Behiç. ${ad}. ${sv} ${SURUM}. ${y}. ${DOI?'Zenodo, ':''}2026. ${KAYNAK_URL}`,
-    bibtex:`@software{cetin2026agmasasi,\n  author = {{\\c{C}}etin, Beh{\\c{c}}},\n  title = {A{\\u{g}} Masas{\\i} (Ag Masasi)},\n  year = {2026},\n  version = {${SURUM}},${DOI?'\n  publisher = {Zenodo},':''}\n  url = {${KAYNAK_URL}}${DOI?`,\n  doi = {${DOI}}`:''}\n}`}}
+  return {apa:`Çetin, B., & Filiz, T. (2026). ${ad} (${sv} ${SURUM}) [${y}]. ${yay}${KAYNAK_URL}`,
+    isnad:`Çetin, Behiç - Filiz, Taner. ${ad}. ${sv} ${SURUM}. ${y}. ${DOI?'Zenodo, ':''}2026. ${KAYNAK_URL}`,
+    bibtex:`@software{cetin2026agmasasi,\n  author = {{\\c{C}}etin, Behi{\\c{c}} and Filiz, Taner},\n  title = {A{\\u{g}} Masas{\\i} (Ag Masasi)},\n  year = {2026},\n  version = {${SURUM}},${DOI?'\n  publisher = {Zenodo},':''}\n  url = {${KAYNAK_URL}}${DOI?`,\n  doi = {${DOI}}`:''}\n}`}}
 function doiSatiri(){if(!DOI)return '';const l=(d,ad)=>`<a class="link link-primary" href="https://doi.org/${d}" target="_blank" rel="noopener noreferrer">${esc(d)}</a><span class="text-base-content/60"> ${esc(ad)}</span>`;
   return `<div class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm"><span><span class="badge badge-primary badge-sm mr-2">DOI</span>${DOI_SURUM?l(DOI_SURUM,ga('atif','buSurum').replace('{0}',SURUM)):l(DOI_TUM,ga('atif','tumSurum'))}</span>${DOI_SURUM&&DOI_TUM?`<span>${l(DOI_TUM,ga('atif','tumSurum'))}</span>`:''}</div>`}
 function atifPencere(){const a=atifMetinleri();const blok=(k,v)=>`<div class="mt-4"><div class="flex items-center justify-between"><h4 class="text-sm font-semibold">${esc(ga('atif',k))}</h4><button class="btn btn-xs" data-kop="${k}">${esc(ga('atif','kopyala'))}</button></div><pre class="mt-1 bg-base-200 rounded-field p-3 text-sm whitespace-pre-wrap break-words">${esc(v)}</pre></div>`;
@@ -144,7 +144,7 @@ async function wordRapor(){const p=P(),G=agG(),R=agOlc(),T=agTop(),C=agCp();cons
     if(A){b+=TB(t('test_asort'));b+=tablo(['','r',t('expected'),'p (≥)','p (≤)',t('ties')],[[A.xAd,sayi(A.r,3),A.beklenen==null?'-':sayi(A.beklenen,3),A.pUst==null?'-':pYaz(A.pUst),A.pAlt==null?'-':pYaz(A.pAlt),sayi(A.bag)]]);b+=wP(asortYorum(A))}
     if(Mo){b+=TB(t('test_mod'));b+=tablo(['',t('observed'),t('randMean'),t('sdShort'),'z','p (≥)'],[[t('modularity')+' Q',sayi(Mo.gozlenen,3),sayi(Mo.ort,3),sayi(Mo.sd,3),Mo.z==null?'-':sayi(Mo.z,2),pYaz(Mo.pUst)]]);b+=wP(modYorum(Mo))}}
   const Y=yontemMetni();b+=H(ga('yontem','baslik'));b+=Not(ga('yontem','not'));Y.par.forEach(x=>{b+=wP(x,{af:140,jc:'both'})});b+=H(ga('yontem','kaynakca'));kaynakcaListesi(Y.kay).forEach(x=>{b+=wP(x,{asili:1,af:80})});
-  b+=wP(`Ağ Masası v${SURUM}. ${t('credit')} Öğr. Gör. Dr. Behiç ÇETİN.`,{sz:14,c:'8A9099',bf:300});
+  b+=wP(`Ağ Masası v${SURUM}. ${t('credit')} Öğr. Gör. Dr. Behiç ÇETİN. ${t('contributor')} Dr. Taner FİLİZ.`,{sz:14,c:'8A9099',bf:300});
   return docxPaketle(b,resimler)}
 
 /* ====================== EXCEL ÇIKTISI ====================== */

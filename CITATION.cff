@@ -7,6 +7,8 @@ authors:
   - family-names: "Çetin"
     given-names: "Behiç"
     orcid: "https://orcid.org/0000-0002-8926-2394"
+  - family-names: "Filiz"
+    given-names: "Taner"
 version: "1.1.0"
 doi: "10.5281/zenodo.24262475"
 identifiers:

@@ -1,4 +1,4 @@
-/* Ağ Masası · Öğr. Gör. Dr. Behiç ÇETİN · MIT Lisansı */
+/* Ağ Masası · Öğr. Gör. Dr. Behiç ÇETİN, Dr. Taner FİLİZ · MIT Lisansı */
 
 /* ====================== DURUM ====================== */
 const SURUM='1.1.0';

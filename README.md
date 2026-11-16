@@ -67,7 +67,7 @@ Web sürümü de verileri yalnızca tarayıcınızda tutar. / The web version al
 
 Ağ Masası'nı kullandıysanız lütfen kaynak gösterin. Araçtaki **Atıf** penceresi APA, İSNAD ve BibTeX biçimlerini verir.
 
-Çetin, B. (2026). *Ağ Masası (Ag Masasi)* (Sürüm 1.1.0) [Bilgisayar yazılımı]. Zenodo. https://doi.org/10.5281/zenodo.24288366
+Çetin, B., & Filiz, T. (2026). *Ağ Masası (Ag Masasi)* (Sürüm 1.1.0) [Bilgisayar yazılımı]. Zenodo. https://doi.org/10.5281/zenodo.24288366
 
 Bütün sürümler için / For all versions: https://doi.org/10.5281/zenodo.24262475 (en yeni sürümü açar / resolves to the latest). Sürüm / Version 1.0.0: https://doi.org/10.5281/zenodo.24262476
 
@@ -80,4 +80,4 @@ Kod MIT Lisansı ile dağıtılır. Gömülü bileşenler:
 - Bayraklar: flag-icons, Panayiotis Lipiridis (MIT, `yazi/FLAG-ICONS-LICENSE.txt`)
 - Örnek veri: NGO Shipbreaking Platform yıllık söküm listeleri (bu örneği kullananların Platform'a ve Filiz ve Çetin, 2026 çalışmasına atıf yapması rica olunur)
 
-Öğr. Gör. Dr. Behiç ÇETİN, Burdur Mehmet Akif Ersoy Üniversitesi.
+Öğr. Gör. Dr. Behiç ÇETİN (sistem mimarı ve geliştirici / system architect and developer) ve Dr. Taner FİLİZ (katkıda bulunan / contributor), Burdur Mehmet Akif Ersoy Üniversitesi.

@@ -61,6 +61,7 @@ D3.update({
 'tieBoth':['İki yönlü','Both ways'],
 'targetNode':['Öteki düğümün adı','Name of the other node'],
 'saveShort':['Kaydet','Save'],
+'contributor':['Katkıda bulunan:','Contributor:'],
 'saveSessionTip':['Kaydet: verileri ve çalışma ortamını .agm dosyası olarak indir (Ctrl+S)','Save: download the data and your workspace as an .agm file (Ctrl+S)'],
 'saveProject':['Proje dosyasını kaydet (.agm)','Save project file (.agm)'],
 'openProject':['Proje dosyası aç (.agm)','Open project file (.agm)'],

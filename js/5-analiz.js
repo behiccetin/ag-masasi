@@ -69,7 +69,7 @@ function agCizimAyar(o={}){const p=P(),g=p.gorsel,G=agG();const RG=renkGrubu();c
   return {G:Gc,deger:boyutDeger(),grup:RG?RG.grup:null,ayar:{stil:g.stil,sb:g.sb,etiket:g.etiket,esik:g.esik,egri:g.egri,gri:g.gri,alan:g.alan&&!!RG&&!RG.sirali&&g.yerlesim!=='harita',gad:g.gad&&!!RG&&!RG.sirali,aciklama:g.aciklama,ok:g.ok,
     renkBaslik:RG?RG.baslik:null,grupAd:RG?RG.ad:null,digerAd:t('other'),boyutBaslik:g.boyut==='esit'?null:boyutAd(),bagBaslik:G.agirlikli?t('legendWeight'):null,sayiYaz:v=>sayi(v,Math.abs(v)<10?2:0),
     harita:GORUNUM.konum&&GORUNUM.konum.harita?GORUNUM.konum.katman:null,bayrak:g.bayrak&&COG.d?bayraklar(G,g.yerlesim==='harita'?g.harita.eslesme:'ad'):null,
-    notlar:[t('legendNodes',sayi(G.n),sayi(Gc.E.length))].concat(om?[t('legendBackbone',sayi(om.length),sayi(G.m))]:[]),ozelRenk:(g.renkler||{})[g.renk]||null,dugumOzel:dugumOzelDizi(G),altBilgi:g.imzaAcik?'Ağ Masası (Çetin, 2026)':null,baslik:o.baslik,ipucuBaslik:o.ipucu,...o}}}
+    notlar:[t('legendNodes',sayi(G.n),sayi(Gc.E.length))].concat(om?[t('legendBackbone',sayi(om.length),sayi(G.m))]:[]),ozelRenk:(g.renkler||{})[g.renk]||null,dugumOzel:dugumOzelDizi(G),altBilgi:g.imzaAcik?(S.dil==='tr'?'Ağ Masası (Çetin ve Filiz, 2026)':'Ağ Masası (Çetin & Filiz, 2026)'):null,baslik:o.baslik,ipucuBaslik:o.ipucu,...o}}}
 
 /* ---------- Topluluk adları: üyelere bağlı tutulur ----------
    p.topluluk.adlar = [{ad, uye:[düğüm kimlikleri]}]. Yeni bölmede üyeleri Jaccard ≥ 0,5 örtüşen topluluk aynı adı alır. */
