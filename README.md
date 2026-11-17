@@ -26,6 +26,12 @@ Ağ sekmesinde bir düğüme tıklayınca açılan kartta düğümün adı ve ö
 
 Clicking a node in the Network tab opens a card for editing its name and attributes, giving it its own colour, size and label, adding or deleting ties and deleting the node (the Delete key also works). All changes can be undone; other nodes keep their place when ties change. **Save** (Ctrl+S) downloads the data and the workspace (open tab, zoom, selected node, tab settings, computed test results, last 30 undo steps) as a single `.agm` file; opening it or dropping it on the page continues where you left off. Older `.ag.json` project files also open.
 
+## Katmanlı yerleşim / Layered layout
+
+Tedarik zinciri, üretim aşamaları ya da örgüt kademeleri gibi sıralı yapılar için düğümler sütunlara (ya da satırlara) dizilir. Katmanlar bağ yönünden kendiliğinden çıkarılabilir ya da Aşama, Katman gibi bir özellikle tanımlanır; katmanlar adlandırılır, sıralanır, yenisi eklenir ve düğümler kartlarından katmanlar arasında taşınır. Katman içindeki sıra, bağ kesişmelerini azaltmak için ağırlık merkezi yöntemiyle bulunur (Sugiyama vd., 1981). Örnek veri penceresindeki "Makarna tedarik zinciri" bu yerleşimi hazır olarak açar. Kalabalık çizimler için düğüm ölçeği, düğümler arası boşluk ve "Üst üste binenleri ayır" düğmesi vardır.
+
+For ordered structures such as supply chains, production stages or organisational levels, nodes are placed in columns (or rows). Layers can be derived from tie direction or defined with an attribute such as Stage or Layer; layers can be renamed, reordered and added, and nodes moved between layers from their cards. The order within a layer is found with the barycentre method to reduce crossings (Sugiyama et al., 1981). The "Pasta supply chain" example opens this layout ready to use. For crowded drawings there are node scale, space between nodes and a "Separate overlapping nodes" button.
+
 ## Harita ve bayraklar / Maps and flags
 
 Düğümler dünya ya da kıta haritası üzerinde (ülkeler), herhangi bir ülkenin birinci düzey idari bölümleri üzerinde (Türkiye'de 81 il; adla ya da plaka numarasıyla eşleşme), enlem ve boylam özellikleriyle ya da kullanıcının yüklediği GeoJSON haritasıyla yerleştirilebilir. Ülke düğümleri bayraklarıyla gösterilebilir.
@@ -67,9 +73,9 @@ Web sürümü de verileri yalnızca tarayıcınızda tutar. / The web version al
 
 Ağ Masası'nı kullandıysanız lütfen kaynak gösterin. Araçtaki **Atıf** penceresi APA, İSNAD ve BibTeX biçimlerini verir.
 
-Çetin, B., & Filiz, T. (2026). *Ağ Masası (Ag Masasi)* (Sürüm 1.1.0) [Bilgisayar yazılımı]. Zenodo. https://doi.org/10.5281/zenodo.24288366
+Çetin, B., & Filiz, T. (2026). *Ağ Masası (Ag Masasi)* (Sürüm 1.2.0) [Bilgisayar yazılımı]. Zenodo. https://doi.org/10.5281/zenodo.24262475
 
-Bütün sürümler için / For all versions: https://doi.org/10.5281/zenodo.24262475 (en yeni sürümü açar / resolves to the latest). Sürüm / Version 1.0.0: https://doi.org/10.5281/zenodo.24262476
+Bütün sürümler için / For all versions: https://doi.org/10.5281/zenodo.24262475 (en yeni sürümü açar / resolves to the latest). Sürüm / Version 1.0.0: https://doi.org/10.5281/zenodo.24262476; 1.1.0: https://doi.org/10.5281/zenodo.24288366
 
 ## Lisans / License
 

@@ -603,6 +603,47 @@
  "sessionSaved": "{0} indirildi. Bu dosyayı açınca kaldığınız yerden sürdürürsünüz.",
  "sessionLoaded": "{0} açıldı; kaldığınız yerden sürdürebilirsiniz.",
  "openSessionQ": "Şu anda açık olan “{0}” projesinin yerine dosyadaki proje açılacak. Gerekiyorsa önce açık projeyi kaydedin. Devam edilsin mi?",
+ "layoutLayered": "Katmanlı",
+ "layerN": "Katman {0}",
+ "layerNone": "(Katmansız)",
+ "layerSource": "Katmanları belirleyen",
+ "layerAuto": "Bağ yönüne göre (kendiliğinden)",
+ "layerDirection": "Akış yönü",
+ "layerLeftRight": "Soldan sağa",
+ "layerTopDown": "Yukarıdan aşağıya",
+ "layerAutoNote": "Katmanlar bağların yönünden çıkarıldı ({0} katman). Katmanları adlandırmak, eklemek ya da düğümleri katmanlar arasında taşımak için aşağıdaki düğmeyle bir Katman özelliği oluşturun.",
+ "layerMakeEditable": "Katmanları düzenlenebilir yap",
+ "layerMadeEditable": "Katman özelliği oluşturuldu; katmanları artık adlandırıp ekleyebilirsiniz.",
+ "layerAttrName": "Katman",
+ "layerList": "Katmanlar (soldan sağa ya da yukarıdan aşağıya)",
+ "layerNameN": "{0}. katmanın adı",
+ "layerCount": "Bu katmandaki düğüm sayısı",
+ "moveUp": "Öne al",
+ "moveDown": "Arkaya al",
+ "layerDelete": "Boş katmanı sil",
+ "layerNewPh": "Yeni katmanın adı",
+ "layerAssignNote": "Bir düğümü başka katmana taşımak için ağda düğüme tıklayın ve kartındaki Katman listesinden seçin. Veri sekmesinde bu özelliğin sütununu doldurarak da katman verebilirsiniz.",
+ "layerDup": "Bu adda bir katman zaten var.",
+ "layerAdded": "\"{0}\" katmanı eklendi.",
+ "layerOfNode": "Katman",
+ "logLayerAttr": "Katmanlar \"{0}\" özelliğine yazıldı",
+ "logLayerRename": "Katmanın adı değişti: {0} → {1}",
+ "logLayerAdd": "Katman eklendi: {0}",
+ "logNodeLayer": "{0} düğümü \"{1}\" katmanına taşındı",
+ "openSampleInTool": "Örneği araçta açın",
+ "sample3Name": "Makarna tedarik zinciri",
+ "sample3Desc": "Buğday üreticisinden markete beş katmanlı, yönlü ve ağırlıklı bir akış ağı (kurgusal veri). Katmanlı yerleşimi denemek için.",
+ "sample3Loaded": "Makarna tedarik zinciri örneği yüklendi.",
+ "sample3AttrStage": "Aşama",
+ "sample3AttrRegion": "Bölge",
+ "sample3Rel": "Ürün akışı (bin ton)",
+ "sample3Note": "Kurgusal örnek veridir; adlar ve miktarlar gerçek firmaları ya da istatistikleri göstermez. Bağ, ürünün aktığı yöne bakar; ağırlık yıllık akışı (bin ton) gösterir.",
+ "nodeScale": "Düğüm ölçeği",
+ "nodeGap": "Düğümler arası boşluk",
+ "separateOverlaps": "Üst üste binenleri ayır",
+ "separateOverlapsTip": "Birbirine değen düğümleri en az kayışla birbirinden uzaklaştırır; elle yerleştirdiğiniz düğümlerde de çalışır. Geri alınabilir.",
+ "overlapsSeparated": "Üst üste binen düğümler ayrıldı. Geri almak için Ctrl+Z.",
+ "noOverlaps": "Üst üste binen düğüm yok.",
  "olcu": {
   "derece": "Derece",
   "dereceGiris": "Giriş derecesi",
@@ -660,7 +701,7 @@
   "ayarlar": "<p>Tablolarda gösterilen ondalık basamak sayısı ve projeye ait not. Hesaplar her zaman tam duyarlıkla yapılır.</p>",
   "agSekme": "<p>Ağın çizimi. Sağdaki ayarlar çizimi hemen değiştirir; sonuçlar ve ölçüler etkilenmez.</p><p>Çizim yayına hazırdır: PNG dosyaları 600 dpi çözünürlük bilgisiyle kaydedilir, SVG dosyası çizim programlarında düzenlenebilir.</p>",
   "agEtkilesim": "<p>Fare tekerleği: yakınlaştır. Boş yeri sürükle: kaydır. Düğümü sürükle: yerini değiştir (kaydedilir). Düğüme tıkla: bilgisini göster, düzenle ya da sil. Delete: seçili düğümü sil. Esc: seçimi kaldır. Üzerine gel: komşularını öne çıkar.</p>",
-  "yerlesim": "<p><b>Kuvvet:</b> bağlı düğümler birbirini çeker, bütün düğümler birbirini iter. ForceAtlas2 ailesinden LinLog modeli kullanılır; topluluklar görünür biçimde ayrışır. Dört başlangıç denenir ve en az kesişimli olan seçilir.</p><p><b>Gruplara göre:</b> her renk grubu kendi içinde yerleşir, gruplar bir daire üzerine dizilir.</p><p><b>Daire:</b> düğümler gruplara göre sıralanıp daireye dizilir. <b>Halkalar:</b> boyut ölçüsünde en yüksek düğümler merkezde, en düşükler dışta.</p>",
+  "yerlesim": "<p><b>Kuvvet:</b> bağlı düğümler birbirini çeker, bütün düğümler birbirini iter. ForceAtlas2 ailesinden LinLog modeli kullanılır; topluluklar görünür biçimde ayrışır. Dört başlangıç denenir ve en az kesişimli olan seçilir.</p><p><b>Gruplara göre:</b> her renk grubu kendi içinde yerleşir, gruplar bir daire üzerine dizilir.</p><p><b>Daire:</b> düğümler gruplara göre sıralanıp daireye dizilir. <b>Halkalar:</b> boyut ölçüsünde en yüksek düğümler merkezde, en düşükler dışta.</p><p><b>Katmanlı:</b> düğümler sıralı katmanlara (sütun ya da satır) dizilir: tedarik zinciri, üretim aşamaları, örgüt kademeleri gibi. Katmanları bir özellikle siz tanımlayabilir, ekleyip adlandırabilir ve sıralayabilirsiniz.</p>",
   "renk": "<p>Düğümler topluluk, çekirdek-çevre, bileşen ya da bir özelliğe göre renklendirilir. En büyük 8 grup ayrı renk alır, kalanlar gri olur. Sayısal özellik dörde bölünerek gösterilir.</p>",
   "boyut": "<p>Düğümün alanı seçilen ölçüyle orantılıdır (yarıçap karekökle büyür, böylece göz yanılmaz). Açıklama kutusunda üç örnek büyüklük gösterilir.</p>",
   "etiket": "<p>En büyük düğümlerden başlayarak bu kadar etikete yer aranır. Etiket düğümün dört yanından birine konur; hiçbir yer boşsa gizlenir. Gizlenen etiket sayısı kalite panelinde yazar.</p>",
@@ -775,7 +816,13 @@
   "dugumRenk": "<p>Yalnız bu düğümün rengi. Renklendirme ölçütünün verdiği rengin önüne geçer; açıklama kutusu değişmez. <b>Varsayılan</b> özel rengi kaldırır. Siyah-beyaz baskı açıkken kullanılmaz.</p>",
   "dugumBoyut": "<p>Düğümün, boyut ölçüsünün verdiği büyüklüğe göre kaç kat çizileceği. Ölçü değerleri değişmez, yalnız şekil değişir.</p>",
   "dugumEtiket": "<p><b>Kendiliğinden:</b> etiket, sayı sınırına ve çakışmaya göre yazılır. <b>Her zaman göster:</b> etiket sınırdan bağımsız olarak yazılmaya çalışılır. <b>Gizle:</b> bu düğümün etiketi hiç yazılmaz.</p>",
-  "bagEkleAg": "<p>Bağ, üstteki ilişki seçicisinde etkin olan ilişkiye eklenir. Öteki düğümün adını yazın ya da listeden seçin; o adda düğüm yoksa yeni düğüm oluşturulur. Aynı bağ zaten varsa ağırlığı yenisiyle değiştirilir.</p>"
+  "bagEkleAg": "<p>Bağ, üstteki ilişki seçicisinde etkin olan ilişkiye eklenir. Öteki düğümün adını yazın ya da listeden seçin; o adda düğüm yoksa yeni düğüm oluşturulur. Aynı bağ zaten varsa ağırlığı yenisiyle değiştirilir.</p>",
+  "katmanOz": "<p><b>Bağ yönüne göre:</b> katmanlar bağların yönünden kendiliğinden çıkarılır. Yönlü ağda her düğüm, kendisine ulaşan en uzun yol kadar ileriye konur; kaynaklar başta, son alıcılar sonda durur. Yönsüz ağda en çok bağlı düğümden uzaklık kullanılır.</p><p><b>Bir özellik seçerseniz</b> (Aşama, Kademe, Katman gibi) her değer bir katman olur. Bu durumda katmanları adlandırabilir, sıralayabilir ve yeni katman ekleyebilirsiniz.</p>",
+  "katmanYon": "<p>Katmanların hangi yönde dizileceği. Tedarik zinciri ve üretim akışı için çoğunlukla soldan sağa, örgüt kademeleri için yukarıdan aşağıya okunaklıdır.</p>",
+  "katmanListe": "<p>Katmanlar bu sırayla dizilir. Adı değiştirmek için kutuya yazın; o katmandaki bütün düğümlerin değeri de değişir. ↑ ↓ ile sırayı değiştirin. Yeni katman boş açılır; düğümleri kartlarındaki Katman listesinden taşıyın. Yalnız boş katmanlar silinebilir.</p><p>Katman içindeki sıra, bağ kesişmelerini azaltmak için ağırlık merkezi yöntemiyle bulunur (Sugiyama vd., 1981). Düğümleri elle sürükleyebilirsiniz; konumlar kaydedilir.</p>",
+  "dugumKatman": "<p>Düğümün bulunduğu katman. Başka bir katman seçerseniz düğüm o katmana taşınır; elle yerleştirdiğiniz öteki düğümler yerinde kalır. Yeni katmanı sağdaki ayar panelinde Yerleşim altından ekleyin.</p>",
+  "dugumOlcek": "<p>Bütün düğümleri birlikte büyütür ya da küçültür (%40 ile %250 arası). Büyüklükler arasındaki oran değişmez; kalabalık ağlarda küçültmek, sunum ve posterde büyütmek okunurluğu artırır. Tek bir düğümü büyütmek için düğüme tıklayıp kartındaki Boyut ayarını kullanın.</p>",
+  "dugumBosluk": "<p>Düğümler arasında bırakılacak en az ek boşluk (piksel). Artırdıkça düğümler birbirinden uzaklaşır ve üst üste binme azalır. Kuvvet, gruplara göre ve harita yerleşimlerinde çakışma giderilirken, katmanlı yerleşimde sütun içindeki aralıkta kullanılır. Daire ve halkalarda düğümler sabit bir şekle dizildiği için etkisi yoktur; orada Üst üste binenleri ayır düğmesini kullanın.</p>"
  },
  "yontem": {
   "baslik": "Yöntem bölümü taslağı",
@@ -821,7 +868,8 @@
   "infomapYurusYonsuz": "Yürüyüşçünün bir düğümden komşusuna geçiş olasılığı bağ ağırlığıyla orantılı alınmıştır.",
   "toplulukDLouvain": "Topluluk yapısı, bağların yönünü yok saymayan yönlü Louvain yöntemiyle {a1} Leicht-Newman yönlü modülerliğini {a2} en büyük yapacak biçimde belirlenmiştir. Yöntem γ = {gam} çözünürlükle {R} farklı rastgele başlangıçtan çalıştırılmış ve en yüksek modülerliği veren bölme seçilmiştir. Ağ {k} topluluğa ayrılmış, yönlü modülerlik Q = {q} bulunmuştur (koşulardaki en düşük değer {q0}). Düğümlerin topluluk kararlılığının ortalaması {kar} olarak hesaplanmıştır.",
   "toplulukLeiden": "Topluluk yapısı Leiden yöntemiyle {a1}, {modad} {a2} en büyük yapacak biçimde belirlenmiştir. Yöntem γ = {gam} çözünürlükle {R} farklı rastgele başlangıçtan çalıştırılmış ve en yüksek modülerliği veren bölme seçilmiştir. Ağ {k} topluluğa ayrılmış, modülerlik Q = {q} bulunmuştur (koşulardaki en düşük değer {q0}). Düğümlerin topluluk kararlılığının ortalaması {kar} olarak hesaplanmıştır.",
-  "toplulukInfomap": "Topluluk yapısı Infomap yöntemiyle {a1}, rastgele yürüyüşün harita denklemindeki kod uzunluğunu en küçük yapacak biçimde belirlenmiştir. {yurus} Yöntem {R} farklı rastgele başlangıçtan çalıştırılmış ve en kısa kodu veren bölme seçilmiştir. Ağ {k} topluluğa ayrılmış, kod uzunluğu L = {L} bit (tek topluluklu kodlama için L₁ = {L1} bit), bölmenin modülerliği Q = {q} bulunmuştur. Düğümlerin topluluk kararlılığının ortalaması {kar} olarak hesaplanmıştır."
+  "toplulukInfomap": "Topluluk yapısı Infomap yöntemiyle {a1}, rastgele yürüyüşün harita denklemindeki kod uzunluğunu en küçük yapacak biçimde belirlenmiştir. {yurus} Yöntem {R} farklı rastgele başlangıçtan çalıştırılmış ve en kısa kodu veren bölme seçilmiştir. Ağ {k} topluluğa ayrılmış, kod uzunluğu L = {L} bit (tek topluluklu kodlama için L₁ = {L1} bit), bölmenin modülerliği Q = {q} bulunmuştur. Düğümlerin topluluk kararlılığının ortalaması {kar} olarak hesaplanmıştır.",
+  "gorselKatman": "Ağ, düğümlerin sıralı katmanlara dizildiği katmanlı bir yerleşimle çizilmiştir ({k} katman: {adlar}); katman içindeki sıra, bağ kesişmelerini azaltmak için ağırlık merkezi yöntemiyle belirlenmiştir {a1}."
  },
  "atif": {
   "baslik": "Atıf",
@@ -880,7 +928,7 @@
    [
     "tedarik",
     "Yönlü katmanlı ağ",
-    "Tedarikçiden perakendeciye uzanan dört katmanlı bir tedarik ağı. Oklar akışın yönünü, çizgi kalınlığı hacmi gösterir. Konumlar elle sürüklenip kaydedilebilir.",
+    "Tedarikçiden perakendeciye uzanan dört katmanlı bir tedarik ağı. Oklar akışın yönünü, çizgi kalınlığı hacmi gösterir. Araçta Katmanlı yerleşimle katmanları kendiniz tanımlayıp ekleyebilirsiniz; bağlantı, buğdaydan makarnaya beş katmanlı bir örnek açar. Konumlar elle sürüklenip kaydedilebilir.",
     "ag",
     "yonluAg"
    ],
@@ -1452,6 +1500,8 @@
    "ikiModY",
    "kaynakcaY",
    "yerlesimY",
+   "katmanY",
+   "cakismaY",
    "haritaY",
    "renkBoyut",
    "etiketY",
@@ -1495,6 +1545,16 @@
    "g": "Başlarken",
    "b": "Kaydetmek ve kaldığınız yerden sürdürmek",
    "m": "<p>Ağ Masası çalışmanızı bu tarayıcıda kendiliğinden saklar; ancak tarayıcı verileri silinirse ya da başka bir bilgisayarda çalışmak isterseniz bir dosyaya ihtiyacınız olur. Üst çubuktaki <b>Kaydet</b> düğmesi (ya da Ctrl+S) her şeyi tek bir <b>.agm</b> dosyasına indirir.</p><p>Dosyada yalnız veriler değil, çalışma ortamınız da bulunur: düğümler, ilişkiler, özellikler, çizim ayarları ve elle taşıdığınız düğüm konumları; açık olan sekme, yakınlaştırma ve seçili düğüm; ölçü, grup ve test sekmelerindeki seçimleriniz; düğmeyle hesaplattığınız küçük dünya, dayanıklılık, QAP ve test sonuçları; son 30 geri alma adımı.</p><p>Dosyayı <b>Dosya</b> menüsündeki <b>Proje dosyası aç</b> ile ya da sayfanın üstüne sürükleyip bırakarak açtığınızda, kaldığınız yerden sürdürürsünüz. Eski proje dosyaları (.ag.json) da açılır.</p><p>.agm dosyası düz metin (JSON) biçimindedir; verileriniz yalnız sizin bilgisayarınızda kalır, hiçbir sunucuya gönderilmez.</p>"
+  },
+  "katmanY": {
+   "g": "Çizim",
+   "b": "Katmanlı yerleşim ve tedarik zincirleri",
+   "m": "<p>Bazı ağlarda düğümler sıralı aşamalara ayrılır: buğday üreticisi, değirmen, makarna fabrikası, dağıtıcı ve market gibi bir tedarik zinciri; ham madde, ara ürün ve nihai ürün; ya da bir örgütün kademeleri. Ağ sekmesinde yerleşim olarak <b>Katmanlı</b> seçildiğinde her aşama bir sütun (ya da satır) olur ve bağlar akış yönünde okunur.</p><ul><li><b>Katmanların kaynağı:</b> Kendiliğinden seçeneğinde katmanlar bağların yönünden çıkarılır; kaynaklar başta, son alıcılar sonda durur. Katmanları kendiniz belirlemek için Aşama ya da Katman gibi kategorik bir özellik seçin. Böyle bir özelliğiniz yoksa <b>Katmanları düzenlenebilir yap</b> düğmesi kendiliğinden bulunan katmanlardan bir Katman özelliği oluşturur.</li><li><b>Katman eklemek ve düzenlemek:</b> Katman listesinde adları değiştirin, ↑ ↓ ile sıralayın, alttaki kutuya yazıp <b>Ekle</b> ile yeni katman açın. İstediğiniz kadar katman olabilir; iki katmanlı bir buğday-makarna ağı da, yedi aşamalı bir zincir de kurulabilir.</li><li><b>Düğümü katmana koymak:</b> ağda düğüme tıklayın ve kartındaki <b>Katman</b> listesinden seçin. Çok sayıda düğüm için Veri sekmesinde özelliğin sütununu doldurmak ya da tabloyu bu sütunla içe aktarmak daha hızlıdır.</li><li><b>Yön:</b> soldan sağa ya da yukarıdan aşağıya.</li></ul><p>Katman içindeki sıra, bağ kesişmelerini azaltmak için ağırlık merkezi yöntemiyle (Sugiyama, Tagawa ve Toda, 1981) bulunur. Düğümleri elle sürükleyebilirsiniz; konumlar tarayıcıda ve .agm dosyasında saklanır. Oklar için ağın yönlü, çizgi kalınlığı için ağırlıklı olması gerekir (Veri sekmesi). Örnek veri penceresindeki <b>Makarna tedarik zinciri</b> bu yerleşimi hazır olarak açar.</p>"
+  },
+  "cakismaY": {
+   "g": "Çizim",
+   "b": "Üst üste binen düğümler",
+   "m": "<p>Kalabalık ağlarda düğümler ve etiketleri birbirinin üstüne binebilir. Ağ sekmesinin sağ panelinde bunun için üç araç vardır:</p><ul><li><b>Düğüm ölçeği:</b> bütün düğümleri birlikte küçültür ya da büyütür. Büyüklükler arasındaki oran korunur; yalnız çizim değişir, ölçü değerleri değişmez.</li><li><b>Düğümler arası boşluk:</b> düğümler arasında bırakılacak en az ek boşluktur. Kuvvet, gruplara göre ve harita yerleşimlerinde çakışma giderme bu boşlukla yapılır; katmanlı yerleşimde sütun içindeki aralık buna göre açılır. Bir sütun alana sığmazsa aşağı doğru uzar; <b>Sığdır</b> düğmesiyle tamamını görebilirsiniz.</li><li><b>Üst üste binenleri ayır:</b> o anki çizimde birbirine değen düğümleri en az kayışla uzaklaştırır. Elle sürüklediğiniz düğümlerde, daire ve halkalarda da çalışır; sonuç elle düzen olarak kaydedilir ve geri alınabilir.</li></ul><p>Tek bir düğümü büyütüp küçültmek ya da etiketini gizlemek için düğüme tıklayıp kartındaki <b>Düğümü düzenle</b> bölümünü kullanın. Etiketler için sağ paneldeki <b>Etiket sayısı</b> da yardımcı olur.</p>"
   }
  },
  "formul": {

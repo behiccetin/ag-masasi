@@ -1,7 +1,7 @@
 /* ====================== ATIF ====================== */
 const DEPO='https://github.com/behiccetin/ag-masasi';
 /* DOI_SURUM: bu sürümün Zenodo DOI'si (sürüm GitHub'da yayımlanıp Zenodo DOI verince yazılır). Boşken atıf, bütün sürümleri kapsayan DOI'yi kullanır. */
-const DOI_SURUM='10.5281/zenodo.24288366';
+const DOI_SURUM='';
 const DOI_TUM='10.5281/zenodo.24262475';
 const DOI=DOI_SURUM||DOI_TUM;
 const KAYNAK_URL=DOI?'https://doi.org/'+DOI:DEPO;
@@ -57,12 +57,13 @@ const KAYNAK={
   borgatti2018:'Borgatti, S. P., Everett, M. G., & Johnson, J. C. (2018). Analyzing social networks (2. bs.). SAGE.',
   comtrade:'United Nations. (2026). UN Comtrade database [Veri seti]. https://comtradeplus.un.org/',
   jacomy2014:'Jacomy, M., Venturini, T., Heymann, S., & Bastian, M. (2014). ForceAtlas2, a continuous graph layout algorithm for handy network visualization designed for the Gephi software. PLoS ONE, 9(6), e98679. https://doi.org/10.1371/journal.pone.0098679',
+  sugiyama1981:'Sugiyama, K., Tagawa, S., & Toda, M. (1981). Methods for visual understanding of hierarchical system structures. IEEE Transactions on Systems, Man, and Cybernetics, 11(2), 109-125. https://doi.org/10.1109/TSMC.1981.4308636',
   noack2007:'Noack, A. (2007). Energy models for graph clustering. Journal of Graph Algorithms and Applications, 11(2), 453-480. https://doi.org/10.7155/jgaa.00154'};
 /* metin içi atıf adları */
 const ATIF_AD={wasserman1994:'Wasserman ve Faust, 1994',freeman1978:'Freeman, 1978',brandes2001:'Brandes, 2001',newman2001:'Newman, 2001',marchiori2000:'Marchiori ve Latora, 2000',bonacich1972:'Bonacich, 1972',page1999:'Page vd., 1999',kleinberg1999:'Kleinberg, 1999',
   batagelj2003:'Batagelj ve Zaveršnik, 2003',watts1998:'Watts ve Strogatz, 1998',burt1992:'Burt, 1992',hopcroft1973:'Hopcroft ve Tarjan, 1973',tarjan1972:'Tarjan, 1972',newman2002:'Newman, 2002',newman2003:'Newman, 2003',blondel2008:'Blondel vd., 2008',leicht2008:'Leicht ve Newman, 2008',traag2019:'Traag vd., 2019',rosvall2008:'Rosvall ve Bergstrom, 2008',dugue2015:'Dugué ve Perez, 2015',newman2004:'Newman ve Girvan, 2004',
   reichardt2006:'Reichardt ve Bornholdt, 2006',danon2005:'Danon vd., 2005',krackhardt1988s:'Krackhardt ve Stern, 1988',borgatti2000:'Borgatti ve Everett, 2000',batagelj2001:'Batagelj ve Mrvar, 2001',humphries2008:'Humphries ve Gurney, 2008',maslov2002:'Maslov ve Sneppen, 2002',
-  schneider2011:'Schneider vd., 2011',krackhardt1988:'Krackhardt, 1988',dekker2007:'Dekker vd., 2007',serrano2009:'Serrano vd., 2009',jacomy2014:'Jacomy vd., 2014',cetin2023:'Çetin ve Filiz, 2023',anderson1999:'Anderson vd., 1999',filiz2026:'Filiz ve Çetin, 2026',ngosbp:'NGO Shipbreaking Platform, 2024',guimera2004:'Guimerà vd., 2004',borgatti2018:'Borgatti vd., 2018',comtrade:'United Nations, 2026',noack2007:'Noack, 2007'};
+  schneider2011:'Schneider vd., 2011',krackhardt1988:'Krackhardt, 1988',dekker2007:'Dekker vd., 2007',serrano2009:'Serrano vd., 2009',jacomy2014:'Jacomy vd., 2014',sugiyama1981:'Sugiyama vd., 1981',cetin2023:'Çetin ve Filiz, 2023',anderson1999:'Anderson vd., 1999',filiz2026:'Filiz ve Çetin, 2026',ngosbp:'NGO Shipbreaking Platform, 2024',guimera2004:'Guimerà vd., 2004',borgatti2018:'Borgatti vd., 2018',comtrade:'United Nations, 2026',noack2007:'Noack, 2007'};
 const atf=(...k)=>'('+k.map(x=>{const a=ATIF_AD[x];return S.dil==='tr'?a:a.replace(' ve ',' & ').replace(' vd.',' et al.')}).join('; ')+')';
 
 /* ====================== YÖNTEM METNİ ======================
@@ -95,7 +96,7 @@ function yontemMetni(){const p=P(),G=agG(),R=agOlc();const g=k=>ga('yontem',k);i
   {const V=agir('t:dugum');if(V){o.push(doldur(g('dugumT'),{y:V.yAd,x:V.xAd,perm:sayi(V.perm),atif:atf('borgatti2018')})+' '+dugumYorum(V));kay.add('borgatti2018')}}
   {const V=agir('t:asort');if(V){o.push(doldur(g('asortT'),{x:V.xAd,perm:sayi(V.perm),atif:atf('newman2003')})+' '+asortYorum(V));kay.add('newman2003')}}
   {const V=agir('t:mod');if(V){o.push(doldur(g('modT'),{perm:sayi(V.R),atif:atf('guimera2004','maslov2002')})+' '+modYorum(V));kay.add('guimera2004');kay.add('maslov2002')}}
-  let pv=doldur(g('gorsel'),{a1:atf('jacomy2014','noack2007')});kay.add('jacomy2014');kay.add('noack2007');if(p.omurga.acik&&G.agirlikli){pv+=' '+doldur(g('omurga'),{atif:atf('serrano2009'),a:sayi(p.omurga.alfa,2),k:sayi((agOmurga()||[]).length)});kay.add('serrano2009')}o.push(pv);
+  let pv;if(p.gorsel.yerlesim==='katman'){const B=katmanBilgi(p,G);pv=doldur(g('gorselKatman'),{a1:atf('sugiyama1981'),k:sayi(B.adlar.length),adlar:B.adlar.join(', ')});kay.add('sugiyama1981')}else{pv=doldur(g('gorsel'),{a1:atf('jacomy2014','noack2007')});kay.add('jacomy2014');kay.add('noack2007')}if(p.omurga.acik&&G.agirlikli){pv+=' '+doldur(g('omurga'),{atif:atf('serrano2009'),a:sayi(p.omurga.alfa,2),k:sayi((agOmurga()||[]).length)});kay.add('serrano2009')}o.push(pv);
   o.push(g('arac'));return {par:o,kay}}
 function kaynakcaListesi(kay){return [atifMetinleri().apa,...[...kay].map(x=>KAYNAK[x])].sort((a,b)=>a.localeCompare(b,'tr'))}
 

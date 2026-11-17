@@ -40,10 +40,10 @@ function alanaSigdir(P,alan,dondur=true){const n=P.x.length;if(!n)return {x:[],y
   const a0=Math.min(...X),a1=Math.max(...X),b0=Math.min(...Y),b1=Math.max(...Y);const k=Math.min((alan.x1-alan.x0)/(a1-a0||1),(alan.y1-alan.y0)/(b1-b0||1));
   const ox=(alan.x0+alan.x1)/2-(a0+a1)/2*k,oy=(alan.y0+alan.y1)/2-(b0+b1)/2*k;return {x:X.map(v=>v*k+ox),y:Y.map(v=>v*k+oy)}}
 /* Çakışma giderme; büyük ağlarda ızgara ile */
-function cakismaGider(P,rad,alan){const n=P.x.length;const h=Math.max(8,2*Math.max(...rad,1)+2);
+function cakismaGider(P,rad,alan,bosluk=0){const n=P.x.length;const h=Math.max(8,2*Math.max(...rad,1)+2+bosluk);
   for(let it=0;it<(n>800?40:120);it++){let hareket=0;const izg=new Map();for(let i=0;i<n;i++){const k=Math.floor(P.x[i]/h)+','+Math.floor(P.y[i]/h);if(!izg.has(k))izg.set(k,[]);izg.get(k).push(i)}
     for(let i=0;i<n;i++){const gx=Math.floor(P.x[i]/h),gy=Math.floor(P.y[i]/h);for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++){const L=izg.get((gx+a)+','+(gy+b));if(!L)continue;for(const j of L){if(j<=i)continue;
-      const ex=P.x[j]-P.x[i],ey=P.y[j]-P.y[i];const d=Math.hypot(ex,ey)||.01;const m=rad[i]+rad[j]+2;if(d<m){const p=(m-d)/2;P.x[i]-=ex/d*p;P.y[i]-=ey/d*p;P.x[j]+=ex/d*p;P.y[j]+=ey/d*p;hareket++}}}}
+      const ex=P.x[j]-P.x[i],ey=P.y[j]-P.y[i];const d=Math.hypot(ex,ey)||.01;const m=rad[i]+rad[j]+2+bosluk;if(d<m){const p=(m-d)/2;P.x[i]-=ex/d*p;P.y[i]-=ey/d*p;P.x[j]+=ex/d*p;P.y[j]+=ey/d*p;hareket++}}}}
     for(let i=0;i<n;i++){P.x[i]=Math.min(alan.x1,Math.max(alan.x0,P.x[i]));P.y[i]=Math.min(alan.y1,Math.max(alan.y0,P.y[i]))}if(!hareket)break}}
 /* Yerleşim türleri */
 function yerlesimHesap(G,tur,tohum,grup,deger,alan){const n=G.n;if(!n)return {x:[],y:[],kesisim:null};
@@ -81,17 +81,19 @@ function yaziGen(m,px,kalin){olcCanvas.font=`${kalin?600:400} ${px}px "Ag Metin"
 /* ---------- Ağ çizimi ----------
    girdi: G (gösterilecek bağlar), P (konumlar), deger (boyut ölçüsü), grup (renk grubu dizisi ya da null), grupAd (grup -> ad), o (ayarlar) */
 function agSvg(G,P,deger,grup,o){let st=STILLER[o.stil]||STILLER.dergi;const sb=!!o.sb,n=G.n,acikla=o.aciklama!==false;const ad=G.ad;const on='s'+Math.random().toString(36).slice(2,8);const bay=o.bayrak&&o.bayrak.some(Boolean)?o.bayrak:null;
-  const mn=Math.min(...deger),mx=Math.max(...deger);const rad=yaricaplar(deger,st,!!bay);const DO=o.dugumOzel||null;if(DO)DO.forEach((x,i)=>{if(x&&x.boyut&&x.boyut!==1)rad[i]*=x.boyut});
+  const mn=Math.min(...deger),mx=Math.max(...deger);const rad=yaricaplar(deger,st,!!bay);const DO=o.dugumOzel||null;if(o.olcek&&o.olcek!==1)for(let i=0;i<n;i++)rad[i]*=o.olcek;if(DO)DO.forEach((x,i)=>{if(x&&x.boyut&&x.boyut!==1)rad[i]*=x.boyut});
   /* gruplar: en büyük 8 grup renk alır, kalanlar "diğer" */
-  let gruplar=[],grIx=new Map();if(grup){const say=new Map();grup.forEach(g=>{if(g!=null&&g!=='')say.set(g,(say.get(g)||0)+1)});gruplar=[...say.entries()].sort((a,b)=>b[1]-a[1]||String(a[0]).localeCompare(String(b[0]),'tr')).map(x=>x[0]);gruplar.slice(0,8).forEach((g,k)=>grIx.set(g,k))}
+  let gruplar=[],grIx=new Map();if(grup){const say=new Map();grup.forEach(g=>{if(g!=null&&g!=='')say.set(g,(say.get(g)||0)+1)});const gs=o.grupSira?new Map(o.grupSira.map((g,i)=>[g,i])):null;gruplar=[...say.entries()].sort((a,b)=>(gs?(gs.has(a[0])?gs.get(a[0]):1e9)-(gs.has(b[0])?gs.get(b[0]):1e9):0)||b[1]-a[1]||String(a[0]).localeCompare(String(b[0]),'tr')).map(x=>x[0]);gruplar.slice(0,8).forEach((g,k)=>grIx.set(g,k))}
   if(o.ozelRenk&&!sb){const pal=st.palet.slice();if(grup)gruplar.slice(0,8).forEach((g,k)=>{if(o.ozelRenk[g])pal[k]=o.ozelRenk[g]});else if(o.ozelRenk.__tek)pal[0]=o.ozelRenk.__tek;st={...st,palet:pal}}
   const SBD=sbDolgu(st);const renk=i=>{if(DO&&DO[i]&&DO[i].renk&&!sb)return DO[i].renk;if(!grup)return sb?SBD[5]:st.palet[0];const k=grIx.get(grup[i]);if(k==null)return sb?'#a0a0a0':DIGER_RENK;return sb?SBD[k]:st.palet[k]};
   const grRenk=k=>sb?'#555':st.palet[k];const alanSag=acikla?930:CW-30;
   let s=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CW} ${CH}" width="${CW}" height="${CH}" font-family="Ag Metin, Helvetica, Arial, sans-serif"><rect width="${CW}" height="${CH}" fill="${st.zemin}"/>`;
   if(o.baslik)s+=`<text x="40" y="34" font-size="18" font-weight="700" fill="${st.yazi}">${esc(o.baslik)}</text>`;
   s+=`<g class="sah" transform="${o.donusum||''}">`;if(o.harita)s+=`<clipPath id="${on}hk"><rect x="20" y="40" width="${(acikla?915:CW-40)}" height="${CH-56}"/></clipPath><path clip-path="url(#${on}hk)" d="${o.harita}" fill="${st.kara||'#eceee9'}" stroke="${st.zemin}" stroke-width="0.7" stroke-linejoin="round"/>`;
+  /* katman başlıkları (katmanlı yerleşim) */
+  if(P.baslik)P.baslik.forEach(b=>{s+=`<text x="${b.x.toFixed(1)}" y="${b.y.toFixed(1)}" text-anchor="${b.hiza}" font-size="13" font-weight="700" fill="${st.soluk}" letter-spacing="0.3">${esc(b.m)}</text>`});
   /* kabarcıklar */
-  const alanlar=[];if(grup&&(o.alan||o.gad)){gruplar.slice(0,8).forEach((g,k)=>{const ix=[];for(let i=0;i<n;i++)if(grup[i]===g)ix.push(i);if(ix.length<3)return;
+  const alanlar=[];if(grup&&(o.alan||o.gad)&&!P.baslik){gruplar.slice(0,8).forEach((g,k)=>{const ix=[];for(let i=0;i<n;i++)if(grup[i]===g)ix.push(i);if(ix.length<3)return;
       const ici=i=>{const L=G.U[i];return L.length?L.filter(([j])=>grup[j]===g).length/L.length:0};const ady=ix.filter(i=>ici(i)>=.5);if(ady.length<2)return;
       const cx0=ortala(ady.map(i=>P.x[i])),cy0=ortala(ady.map(i=>P.y[i]));const dd=ady.map(i=>Math.hypot(P.x[i]-cx0,P.y[i]-cy0));const md=dd.slice().sort((a,b)=>a-b)[Math.floor(dd.length/2)]||1;
       const cek=new Set(ady.filter((i,z)=>dd[z]<=md*2.2));if(cek.size<2)return;const uz=(a,b)=>Math.hypot(P.x[a]-P.x[b],P.y[a]-P.y[b]);

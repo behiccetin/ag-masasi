@@ -19,7 +19,7 @@ function ciz(){if(cizimde){setTimeout(ciz,0);return}cizimde=true;try{$('#projeAd
   ({giris:cizGiris,veri:cizVeri,ag:cizAg,olcu:cizOlcu,grup:cizGrup,yapi:cizYapi,test:cizTest,rapor:cizRapor,yardim:cizYardim})[S.sekme]()}
   catch(e){console.error(e);$('#s-'+S.sekme).innerHTML=`<div class="max-w-3xl mx-auto p-8">${uyari(t('calcError'),'error')}</div>`}finally{cizimde=false}}
 /* bölüm içindeki araç düğmelerini ve sekme bağlantılarını bağla */
-function bagla(){$$('main [data-arac]').forEach(b=>{if(b._b)return;b._b=1;b.addEventListener('click',()=>ARAC[b.dataset.arac]())});$$('main [data-git]').forEach(b=>{if(b._b)return;b._b=1;b.addEventListener('click',()=>{if(b.dataset.yk)YARDIM.konu=b.dataset.yk;sekmeAc(b.dataset.git)})})}
+function bagla(){$$('main [data-arac]').forEach(b=>{if(b._b)return;b._b=1;b.addEventListener('click',()=>ARAC[b.dataset.arac]())});$$('main [data-git]').forEach(b=>{if(b._b)return;b._b=1;b.addEventListener('click',()=>{if(b.dataset.yk)YARDIM.konu=b.dataset.yk;sekmeAc(b.dataset.git)})});$$('main [data-orn]').forEach(b=>{if(b._b)return;b._b=1;b.addEventListener('click',()=>ornekAc(b.dataset.orn))})}
 
 /* ====================== AYARLAR, GÜNLÜK, DİL, PROJE ====================== */
 function ayarPencere(){const p=P();pencere(t('toolSettings'),`<div class="space-y-4"><label class="flex items-center justify-between gap-3 text-sm"><span>${esc(t('decimals'))}</span><input type="number" min="2" max="6" class="input input-sm w-24" id="ayOnd" value="${p.ondalik}"></label>

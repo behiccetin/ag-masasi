@@ -1,7 +1,7 @@
 /* Ağ Masası · Öğr. Gör. Dr. Behiç ÇETİN, Dr. Taner FİLİZ · MIT Lisansı */
 
 /* ====================== DURUM ====================== */
-const SURUM='1.1.0';
+const SURUM='1.2.0';
 const KAYIT='agMasasi.v1';
 const S={P:null,dil:'tr',sekme:'giris',kilit:false,kaydedildi:false,sonuc:null,ver:0};
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -51,6 +51,8 @@ function projeDuzelt(p){const b=bosProje();p.v=1;p.ad=p.ad||b.ad;p.yonlu=!!p.yon
   p.iliskiler=(Array.isArray(p.iliskiler)?p.iliskiler:[]).filter(r=>r&&r.id).map(r=>({id:String(r.id),ad:String(r.ad??''),kenarlar:(Array.isArray(r.kenarlar)?r.kenarlar:[]).filter(e=>Array.isArray(e)&&ids.has(String(e[0]))&&ids.has(String(e[1]))&&e[0]!==e[1]).map(e=>[String(e[0]),String(e[1]),typeof e[2]==='number'&&isFinite(e[2])&&e[2]>0?e[2]:1])}));
   if(!p.iliskiler.some(r=>r.id===p.aktif))p.aktif=p.iliskiler[0]?.id||null;
   p.gorsel=Object.assign({},GORSEL_VARSAYILAN,p.gorsel||{});p.gorsel.harita=Object.assign({},GORSEL_VARSAYILAN.harita,p.gorsel.harita||{});if(!p.gorsel.renkler||typeof p.gorsel.renkler!=='object')p.gorsel.renkler={};
+  if(!(typeof p.gorsel.olcek==='number'&&p.gorsel.olcek>=.4&&p.gorsel.olcek<=2.5&&p.gorsel.olcek!==1))delete p.gorsel.olcek;if(!(typeof p.gorsel.bosluk==='number'&&p.gorsel.bosluk>0&&p.gorsel.bosluk<=40))delete p.gorsel.bosluk;
+  if(p.gorsel.katman&&typeof p.gorsel.katman==='object'){const k=p.gorsel.katman;p.gorsel.katman={oz:typeof k.oz==='string'?k.oz:'',sira:Array.isArray(k.sira)?k.sira.filter(x=>typeof x==='string'&&x.trim()).map(x=>x.trim()):[],yon:k.yon==='dikey'?'dikey':'yatay'}}else delete p.gorsel.katman;
   if(p.gorsel.dugum&&typeof p.gorsel.dugum==='object'){const D={};for(const [id,x] of Object.entries(p.gorsel.dugum))if(ids.has(id)&&x&&typeof x==='object'){const y={};if(/^#[0-9a-f]{6}$/i.test(x.renk||''))y.renk=x.renk;if(typeof x.boyut==='number'&&x.boyut>=0.25&&x.boyut<=4&&x.boyut!==1)y.boyut=x.boyut;if(x.etiket==='goster'||x.etiket==='gizle')y.etiket=x.etiket;if(Object.keys(y).length)D[id]=y}if(Object.keys(D).length)p.gorsel.dugum=D;else delete p.gorsel.dugum}else delete p.gorsel.dugum;
   for(const k of ['topluluk','cekirdek','ei','qap','omurga'])p[k]=Object.assign({},b[k],p[k]||{});
   p.qap.bagimsiz=Array.isArray(p.qap.bagimsiz)?p.qap.bagimsiz:[];p.topluluk.adlar=(Array.isArray(p.topluluk.adlar)?p.topluluk.adlar:[]).filter(x=>x&&typeof x.ad==='string'&&Array.isArray(x.uye));
@@ -88,8 +90,10 @@ function sekmeKilitle(){if(S.kilit)return;S.kilit=true;clearTimeout(kayitZ);$('#
 const GECMIS={geri:[],ileri:[]};
 function once(){GECMIS.geri.push(JSON.stringify(P()));if(GECMIS.geri.length>100)GECMIS.geri.shift();GECMIS.ileri=[];gecmisDugme()}
 function gecmisDugme(){$('#geriAl').disabled=!GECMIS.geri.length;$('#yinele').disabled=!GECMIS.ileri.length}
-function geriAl(){if(!GECMIS.geri.length)return;GECMIS.ileri.push(JSON.stringify(P()));S.P=projeDuzelt(JSON.parse(GECMIS.geri.pop()));sonrasi();tost(t('undone'))}
-function yinele(){if(!GECMIS.ileri.length)return;GECMIS.geri.push(JSON.stringify(P()));S.P=projeDuzelt(JSON.parse(GECMIS.ileri.pop()));sonrasi();tost(t('redone'))}
+function geriAl(){if(!GECMIS.geri.length)return;const k0=JSON.stringify(P().gorsel.konum||null);GECMIS.ileri.push(JSON.stringify(P()));S.P=projeDuzelt(JSON.parse(GECMIS.geri.pop()));konumDegistiyse(k0);sonrasi();tost(t('undone'))}
+function yinele(){if(!GECMIS.ileri.length)return;const k0=JSON.stringify(P().gorsel.konum||null);GECMIS.geri.push(JSON.stringify(P()));S.P=projeDuzelt(JSON.parse(GECMIS.ileri.pop()));konumDegistiyse(k0);sonrasi();tost(t('redone'))}
+/* elle konumlar geri alındıysa ekrandaki yerleşim önbelleği bırakılır */
+function konumDegistiyse(k0){if(JSON.stringify(P().gorsel.konum||null)!==k0&&typeof GORUNUM!=='undefined')GORUNUM.konum=null}
 function sonrasi(){S.sonuc=null;S.ver++;gecmisDugme();kaydet();ciz()}
 /* islem: değişiklikten önce anlık görüntü alır, sonra kaydeder ve yeniden çizer. */
 function islem(fn,o={}){once();const r=fn();S.sonuc=null;S.ver++;kaydet();if(!o.cizme)ciz();return r}

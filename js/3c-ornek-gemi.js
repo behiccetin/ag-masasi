@@ -15,9 +15,11 @@ function ornekGemi(){const p=bosProje();const tr=S.dil==='tr';p.ad=t('sample2Nam
   p.ei.oz='kita';p.qap={bagimli:'g2023',bagimsiz:['g2020','oz:kita'],perm:1000};p.not=t('sample2Note');p.kaynak='gemi';return p}
 async function ornekYukle(){const sec=await pencere(t('loadSample'),`<p class="text-sm text-base-content/70 mb-4">${esc(t('sampleChooseLead'))}</p><div class="grid sm:grid-cols-2 gap-3">
     <button class="text-left border border-base-300 rounded-box p-4 hover:border-primary" data-orn="gemi"><span class="dar text-lg font-bold block">${esc(t('sample2Name'))}</span><span class="text-sm text-base-content/70 block mt-1">${esc(t('sample2Desc'))}</span><span class="text-xs text-base-content/60 block mt-2">${esc(t('sourceShort'))}: ${esc(KAYNAK.filiz2026)}</span></button>
-    <button class="text-left border border-base-300 rounded-box p-4 hover:border-primary" data-orn="akademi"><span class="dar text-lg font-bold block">${esc(t('sampleName'))}</span><span class="text-sm text-base-content/70 block mt-1">${esc(t('sampleDesc'))}</span></button></div>`,[{ad:t('cancel'),d:null}],
-  {acilinca:()=>$$('[data-orn]').forEach(b=>b.onclick=()=>{ORN_SEC=b.dataset.orn;$('#pencere').close()})});void sec;const k=ORN_SEC;ORN_SEC=null;if(!k)return;
-  if(P().dugumler.length&&!(await sor(t('sampleQ'),t('loadSample'))))return;once();S.P=k==='gemi'?ornekGemi():ornekProje();S.ver++;GORUNUM.konum=null;kaydet();sekmeAc('ag');tost(k==='gemi'?t('sample2Loaded'):t('sampleLoaded'))}
+    <button class="text-left border border-base-300 rounded-box p-4 hover:border-primary" data-orn="akademi"><span class="dar text-lg font-bold block">${esc(t('sampleName'))}</span><span class="text-sm text-base-content/70 block mt-1">${esc(t('sampleDesc'))}</span></button>
+    <button class="text-left border border-base-300 rounded-box p-4 hover:border-primary" data-orn="makarna"><span class="dar text-lg font-bold block">${esc(t('sample3Name'))}</span><span class="text-sm text-base-content/70 block mt-1">${esc(t('sample3Desc'))}</span></button></div>`,[{ad:t('cancel'),d:null}],
+  {acilinca:()=>$$('[data-orn]').forEach(b=>b.onclick=()=>{ORN_SEC=b.dataset.orn;$('#pencere').close()})});void sec;const k=ORN_SEC;ORN_SEC=null;if(!k)return;await ornekAc(k)}
+/* k: 'gemi', 'akademi' ya da 'makarna' */
+async function ornekAc(k){if(P().dugumler.length&&!(await sor(t('sampleQ'),t('loadSample'))))return;once();S.P=k==='gemi'?ornekGemi():k==='makarna'?ornekMakarna():ornekProje();S.ver++;GORUNUM.konum=null;GORUNUM.secili=null;GORUNUM.donusum={k:1,x:0,y:0};kaydet();sekmeAc('ag');tost(k==='gemi'?t('sample2Loaded'):k==='makarna'?t('sample3Loaded'):t('sampleLoaded'))}
 let ORN_SEC=null;
 
 /* Makaledeki sonuçlarla karşılaştırma (Filiz ve Çetin, 2026, Tablo 1 ve Tablo 2).

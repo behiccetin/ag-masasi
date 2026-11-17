@@ -603,6 +603,47 @@
  "sessionSaved": "{0} was downloaded. Open this file to continue where you left off.",
  "sessionLoaded": "{0} was opened; you can continue where you left off.",
  "openSessionQ": "The project in the file will replace the open project “{0}”. Save the open project first if you need it. Continue?",
+ "layoutLayered": "Layered",
+ "layerN": "Layer {0}",
+ "layerNone": "(No layer)",
+ "layerSource": "Layers come from",
+ "layerAuto": "Direction of ties (automatic)",
+ "layerDirection": "Flow direction",
+ "layerLeftRight": "Left to right",
+ "layerTopDown": "Top to bottom",
+ "layerAutoNote": "The layers were derived from the direction of ties ({0} layers). To name or add layers, or move nodes between layers, create a Layer attribute with the button below.",
+ "layerMakeEditable": "Make layers editable",
+ "layerMadeEditable": "A Layer attribute was created; you can now name and add layers.",
+ "layerAttrName": "Layer",
+ "layerList": "Layers (left to right or top to bottom)",
+ "layerNameN": "Name of layer {0}",
+ "layerCount": "Number of nodes in this layer",
+ "moveUp": "Move up",
+ "moveDown": "Move down",
+ "layerDelete": "Delete the empty layer",
+ "layerNewPh": "Name of the new layer",
+ "layerAssignNote": "To move a node to another layer, click it on the network and choose from the Layer list on its card. You can also assign layers by filling in this attribute's column in the Data tab.",
+ "layerDup": "A layer with this name already exists.",
+ "layerAdded": "Layer \"{0}\" was added.",
+ "layerOfNode": "Layer",
+ "logLayerAttr": "Layers were written to the attribute \"{0}\"",
+ "logLayerRename": "Layer renamed: {0} → {1}",
+ "logLayerAdd": "Layer added: {0}",
+ "logNodeLayer": "Node {0} was moved to layer \"{1}\"",
+ "openSampleInTool": "Open the example in the tool",
+ "sample3Name": "Pasta supply chain",
+ "sample3Desc": "A five-layer, directed and weighted flow network from wheat growers to shops (fictional data). For trying out the Layered layout.",
+ "sample3Loaded": "The pasta supply chain example was loaded.",
+ "sample3AttrStage": "Stage",
+ "sample3AttrRegion": "Region",
+ "sample3Rel": "Product flow (thousand tonnes)",
+ "sample3Note": "Fictional example data; names and quantities do not represent real firms or statistics. A tie points in the direction the product flows; the weight is the annual flow (thousand tonnes).",
+ "nodeScale": "Node scale",
+ "nodeGap": "Space between nodes",
+ "separateOverlaps": "Separate overlapping nodes",
+ "separateOverlapsTip": "Moves touching nodes apart as little as possible; also works on nodes you placed by hand. Can be undone.",
+ "overlapsSeparated": "Overlapping nodes were separated. Press Ctrl+Z to undo.",
+ "noOverlaps": "No nodes overlap.",
  "olcu": {
   "derece": "Degree",
   "dereceGiris": "In-degree",
@@ -660,7 +701,7 @@
   "ayarlar": "<p>The number of decimals shown in tables and a note about the project. Calculations always use full precision.</p>",
   "agSekme": "<p>The drawing of the network. The settings on the right change the drawing at once; results and measures are not affected.</p><p>The drawing is ready for publication: PNG files are saved with 600 dpi resolution information and the SVG file can be edited in drawing software.</p>",
   "agEtkilesim": "<p>Mouse wheel: zoom. Drag empty space: pan. Drag a node: move it (saved). Click a node: show, edit or delete it. Delete: delete the selected node. Esc: clear the selection. Hover: highlight its neighbours.</p>",
-  "yerlesim": "<p><b>Force:</b> tied nodes attract each other and all nodes repel each other. The LinLog model from the ForceAtlas2 family is used, so communities separate visibly. Four starts are tried and the one with the fewest crossings is kept.</p><p><b>By group:</b> each colour group is laid out on its own and the groups are arranged on a circle.</p><p><b>Circle:</b> nodes are sorted by group and placed on a circle. <b>Rings:</b> nodes highest on the size measure sit in the centre, the lowest on the outside.</p>",
+  "yerlesim": "<p><b>Force:</b> tied nodes attract each other and all nodes repel each other. The LinLog model from the ForceAtlas2 family is used, so communities separate visibly. Four starts are tried and the one with the fewest crossings is kept.</p><p><b>By group:</b> each colour group is laid out on its own and the groups are arranged on a circle.</p><p><b>Circle:</b> nodes are sorted by group and placed on a circle. <b>Rings:</b> nodes highest on the size measure sit in the centre, the lowest on the outside.</p><p><b>Layered:</b> nodes are placed in ordered layers (columns or rows), as in a supply chain, production stages or organisational levels. You can define the layers with an attribute, add, name and reorder them.</p>",
   "renk": "<p>Nodes are coloured by community, core-periphery, component or an attribute. The 8 largest groups get their own colour and the rest are grey. A numeric attribute is shown in four bands.</p>",
   "boyut": "<p>A node's area is proportional to the chosen measure (the radius grows with the square root, so the eye is not misled). The legend shows three sample sizes.</p>",
   "etiket": "<p>Starting from the largest nodes, room is sought for this many labels. A label is placed on one of four sides of its node; if none is free it is hidden. The number of hidden labels is shown in the quality panel.</p>",
@@ -775,7 +816,13 @@
   "dugumRenk": "<p>The colour of this node only. It overrides the colour given by the colouring criterion; the legend does not change. <b>Default</b> removes the custom colour. Not used while black-and-white print is on.</p>",
   "dugumBoyut": "<p>How many times larger or smaller than the size measure gives the node is drawn. The measure values do not change, only the figure.</p>",
   "dugumEtiket": "<p><b>Automatic:</b> the label is written depending on the label limit and overlaps. <b>Always show:</b> the label is written regardless of the limit, where it fits. <b>Hide:</b> this node's label is never written.</p>",
-  "bagEkleAg": "<p>The tie is added to the relation active in the relation selector at the top. Type the other node's name or pick it from the list; if no node has that name, a new node is created. If the same tie already exists, its weight is replaced with the new one.</p>"
+  "bagEkleAg": "<p>The tie is added to the relation active in the relation selector at the top. Type the other node's name or pick it from the list; if no node has that name, a new node is created. If the same tie already exists, its weight is replaced with the new one.</p>",
+  "katmanOz": "<p><b>Direction of ties:</b> the layers are derived from the direction of ties. In a directed network each node is placed as far along as the longest path that reaches it; sources come first and final buyers last. In an undirected network the distance from the most connected node is used.</p><p><b>If you choose an attribute</b> (such as Stage, Level or Layer), each value becomes a layer. You can then name, reorder and add layers.</p>",
+  "katmanYon": "<p>Which way the layers run. Left to right usually reads best for supply chains and production flows, top to bottom for organisational levels.</p>",
+  "katmanListe": "<p>The layers are placed in this order. Type in a box to rename a layer; the value of every node in it changes too. Use ↑ ↓ to reorder. A new layer starts empty; move nodes into it from the Layer list on their cards. Only empty layers can be deleted.</p><p>The order within a layer is found with the barycentre method to reduce crossing ties (Sugiyama et al., 1981). You can drag nodes by hand; positions are saved.</p>",
+  "dugumKatman": "<p>The layer the node is in. Choose another layer to move the node there; the other nodes you placed by hand stay where they are. Add a new layer in the settings panel on the right, under Layout.</p>",
+  "dugumOlcek": "<p>Makes all nodes larger or smaller together (40% to 250%). The ratios between sizes do not change; shrinking helps in crowded networks, enlarging in slides and posters. To resize a single node, click it and use Size on its card.</p>",
+  "dugumBosluk": "<p>The minimum extra space (pixels) left between nodes. The more you raise it, the further apart nodes move and the less they overlap. It is used when overlaps are removed in the force, group and map layouts, and for the spacing within a column in the layered layout. It has no effect in circle and rings, where nodes follow a fixed shape; use Separate overlapping nodes there.</p>"
  },
  "yontem": {
   "baslik": "Draft method section",
@@ -821,7 +868,8 @@
   "infomapYurusYonsuz": "The walker's probability of moving from a node to a neighbour was taken as proportional to the tie weight.",
   "toplulukDLouvain": "The community structure was determined with the directed Louvain method {a1}, which does not ignore the direction of ties, so as to maximise the Leicht-Newman directed modularity {a2}. The method was run from {R} different random starts with resolution γ = {gam}, and the partition with the highest modularity was chosen. The network divided into {k} communities with directed modularity Q = {q} (the lowest value across runs was {q0}). The mean community stability of the nodes was {kar}.",
   "toplulukLeiden": "The community structure was determined with the Leiden method {a1} so as to maximise {modad} {a2}. The method was run from {R} different random starts with resolution γ = {gam}, and the partition with the highest modularity was chosen. The network divided into {k} communities with modularity Q = {q} (the lowest value across runs was {q0}). The mean community stability of the nodes was {kar}.",
-  "toplulukInfomap": "The community structure was determined with the Infomap method {a1} so as to minimise the code length of a random walk in the map equation. {yurus} The method was run from {R} different random starts, and the partition giving the shortest code was chosen. The network divided into {k} communities with code length L = {L} bits (L₁ = {L1} bits for a single-community code); the modularity of this partition is Q = {q}. The mean community stability of the nodes was {kar}."
+  "toplulukInfomap": "The community structure was determined with the Infomap method {a1} so as to minimise the code length of a random walk in the map equation. {yurus} The method was run from {R} different random starts, and the partition giving the shortest code was chosen. The network divided into {k} communities with code length L = {L} bits (L₁ = {L1} bits for a single-community code); the modularity of this partition is Q = {q}. The mean community stability of the nodes was {kar}.",
+  "gorselKatman": "The network was drawn with a layered layout in which nodes are placed in ordered layers ({k} layers: {adlar}); the order within each layer was set with the barycentre method to reduce crossing ties {a1}."
  },
  "atif": {
   "baslik": "Citation",
@@ -880,7 +928,7 @@
    [
     "tedarik",
     "A directed layered network",
-    "A four-layer supply network from suppliers to retailers. Arrows show the direction of flow and line width the volume. Positions can be dragged by hand and saved.",
+    "A four-layer supply network from suppliers to retailers. Arrows show the direction of flow and line width the volume. With the Layered layout in the tool you can define and add the layers yourself; the link opens a five-layer example from wheat to pasta. Positions can be dragged by hand and saved.",
     "ag",
     "yonluAg"
    ],
@@ -1452,6 +1500,8 @@
    "ikiModY",
    "kaynakcaY",
    "yerlesimY",
+   "katmanY",
+   "cakismaY",
    "haritaY",
    "renkBoyut",
    "etiketY",
@@ -1495,6 +1545,16 @@
    "g": "Getting started",
    "b": "Saving and continuing where you left off",
    "m": "<p>Ağ Masası keeps your work in this browser automatically, but you need a file if the browser data are cleared or you want to work on another computer. The <b>Save</b> button in the top bar (or Ctrl+S) downloads everything as a single <b>.agm</b> file.</p><p>The file holds not only the data but also your workspace: nodes, relations, attributes, drawing settings and the node positions you moved by hand; the open tab, the zoom and the selected node; your choices in the measures, groups and tests tabs; the small-world, robustness, QAP and test results you computed with a button; and the last 30 undo steps.</p><p>When you open the file with <b>Open project file</b> in the <b>File</b> menu, or by dragging it onto the page, you continue where you left off. Older project files (.ag.json) also open.</p><p>An .agm file is plain text (JSON); your data stay on your computer only and are never sent to a server.</p>"
+  },
+  "katmanY": {
+   "g": "Drawing",
+   "b": "Layered layout and supply chains",
+   "m": "<p>In some networks nodes fall into ordered stages: a supply chain of wheat growers, mills, pasta factories, distributors and shops; raw material, intermediate and final product; or the levels of an organisation. When <b>Layered</b> is chosen as the layout in the Network tab, each stage becomes a column (or row) and ties read in the direction of flow.</p><ul><li><b>Source of layers:</b> with the automatic option the layers are derived from the direction of ties; sources come first and final buyers last. To set the layers yourself, choose a categorical attribute such as Stage or Layer. If you have no such attribute, <b>Make layers editable</b> creates a Layer attribute from the layers found automatically.</li><li><b>Adding and editing layers:</b> rename layers in the list, reorder them with ↑ ↓, and open a new layer by typing in the box below and pressing <b>Add</b>. You can have as many layers as you need: a two-layer wheat-pasta network or a seven-stage chain.</li><li><b>Putting a node in a layer:</b> click the node on the network and choose from the <b>Layer</b> list on its card. For many nodes it is quicker to fill in the attribute column in the Data tab or to import the table with that column.</li><li><b>Direction:</b> left to right or top to bottom.</li></ul><p>The order within a layer is found with the barycentre method (Sugiyama, Tagawa and Toda, 1981) to reduce crossing ties. You can drag nodes by hand; positions are kept in the browser and in the .agm file. Arrows need a directed network and line width a weighted one (Data tab). The <b>Pasta supply chain</b> in the example data window opens this layout ready to use.</p>"
+  },
+  "cakismaY": {
+   "g": "Drawing",
+   "b": "Overlapping nodes",
+   "m": "<p>In crowded networks nodes and their labels can overlap. The right panel of the Network tab has three tools for this:</p><ul><li><b>Node scale:</b> makes all nodes smaller or larger together. The ratios between sizes are kept; only the drawing changes, not the measure values.</li><li><b>Space between nodes:</b> the minimum extra space left between nodes. Overlaps in the force, group and map layouts are removed with this space; in the layered layout the spacing within a column opens up accordingly. If a column does not fit, it extends downwards; use <b>Fit</b> to see all of it.</li><li><b>Separate overlapping nodes:</b> moves touching nodes in the current drawing apart as little as possible. It also works on nodes you dragged by hand and in circle and rings; the result is saved as a manual arrangement and can be undone.</li></ul><p>To enlarge or shrink a single node or hide its label, click the node and use <b>Edit node</b> on its card. The <b>Labels</b> count in the right panel also helps with labels.</p>"
   }
  },
  "formul": {
