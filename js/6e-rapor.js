@@ -1,7 +1,7 @@
 /* ====================== ATIF ====================== */
 const DEPO='https://github.com/behiccetin/ag-masasi';
 /* DOI_SURUM: bu sürümün Zenodo DOI'si (sürüm GitHub'da yayımlanıp Zenodo DOI verince yazılır). Boşken atıf, bütün sürümleri kapsayan DOI'yi kullanır. */
-const DOI_SURUM='';
+const DOI_SURUM='10.5281/zenodo.24305164';
 const DOI_TUM='10.5281/zenodo.24262475';
 const DOI=DOI_SURUM||DOI_TUM;
 const KAYNAK_URL=DOI?'https://doi.org/'+DOI:DEPO;
