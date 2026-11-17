@@ -22,6 +22,9 @@ identifiers:
   - type: doi
     value: "10.5281/zenodo.24288366"
     description: "Sürüm / version 1.1.0"
+  - type: doi
+    value: "10.5281/zenodo.24304109"
+    description: "Sürüm / version 1.2.0"
 date-released: "2026-11-17"
 license: MIT
 repository-code: "https://github.com/behiccetin/ag-masasi"
