@@ -1,7 +1,7 @@
 /* Ağ Masası · Öğr. Gör. Dr. Behiç ÇETİN, Dr. Taner FİLİZ · MIT Lisansı */
 
 /* ====================== DURUM ====================== */
-const SURUM='1.2.0';
+const SURUM='1.3.0';
 const KAYIT='agMasasi.v1';
 const S={P:null,dil:'tr',sekme:'giris',kilit:false,kaydedildi:false,sonuc:null,ver:0};
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -48,10 +48,13 @@ function projeDuzelt(p){const b=bosProje();p.v=1;p.ad=p.ad||b.ad;p.yonlu=!!p.yon
   const ok=new Set(p.ozellikler.map(o=>o.k));
   p.dugumler=(Array.isArray(p.dugumler)?p.dugumler:[]).filter(d=>d&&d.id).map(d=>{const oz={};for(const [k,v] of Object.entries(d.oz||{}))if(ok.has(k))oz[k]=v;return {id:String(d.id),ad:String(d.ad??''),oz}});
   const ids=new Set(p.dugumler.map(d=>d.id));
-  p.iliskiler=(Array.isArray(p.iliskiler)?p.iliskiler:[]).filter(r=>r&&r.id).map(r=>({id:String(r.id),ad:String(r.ad??''),kenarlar:(Array.isArray(r.kenarlar)?r.kenarlar:[]).filter(e=>Array.isArray(e)&&ids.has(String(e[0]))&&ids.has(String(e[1]))&&e[0]!==e[1]).map(e=>[String(e[0]),String(e[1]),typeof e[2]==='number'&&isFinite(e[2])&&e[2]>0?e[2]:1])}));
+  p.iliskiler=(Array.isArray(p.iliskiler)?p.iliskiler:[]).filter(r=>r&&r.id).map(r=>({id:String(r.id),ad:String(r.ad??''),kenarlar:(Array.isArray(r.kenarlar)?r.kenarlar:[]).filter(e=>Array.isArray(e)&&ids.has(String(e[0]))&&ids.has(String(e[1]))).map(e=>[String(e[0]),String(e[1]),typeof e[2]==='number'&&isFinite(e[2])&&e[2]>0?e[2]:1])}));
   if(!p.iliskiler.some(r=>r.id===p.aktif))p.aktif=p.iliskiler[0]?.id||null;
   p.gorsel=Object.assign({},GORSEL_VARSAYILAN,p.gorsel||{});p.gorsel.harita=Object.assign({},GORSEL_VARSAYILAN.harita,p.gorsel.harita||{});if(!p.gorsel.renkler||typeof p.gorsel.renkler!=='object')p.gorsel.renkler={};
   if(!(typeof p.gorsel.olcek==='number'&&p.gorsel.olcek>=.4&&p.gorsel.olcek<=2.5&&p.gorsel.olcek!==1))delete p.gorsel.olcek;if(!(typeof p.gorsel.bosluk==='number'&&p.gorsel.bosluk>0&&p.gorsel.bosluk<=40))delete p.gorsel.bosluk;
+  {const g=p.gorsel;if(!['acik','dar'].includes(g.okBicim))delete g.okBicim;if(![.6,1.6,2.2].includes(g.okBoy))delete g.okBoy;if(g.okYer!=='orta')delete g.okYer;if(g.okTers!==true)delete g.okTers;if(!['kesik','nokta'].includes(g.bagCizgi))delete g.bagCizgi;if(!/^#[0-9a-f]{6}$/i.test(g.bagRenk||''))delete g.bagRenk}
+  for(const [k,en,ust] of [['dugumAralik',1,200],['kenarAralik',.2,40]]){const a=p.gorsel[k];if(!(Array.isArray(a)&&a.length===2&&a.every(x=>typeof x==='number'&&isFinite(x)&&x>=en&&x<=ust)&&a[0]<=a[1]))delete p.gorsel[k]}
+  if(p.gorsel.kenar&&typeof p.gorsel.kenar==='object'){const rel=new Set(p.iliskiler.map(r=>r.id)),K={};for(const [ka,x] of Object.entries(p.gorsel.kenar)){const [r,c]=ka.split('|');const u=(c||'').split(/[>~]/);if(!rel.has(r)||u.length!==2||!ids.has(u[0])||!ids.has(u[1])||!x||typeof x!=='object')continue;const y={};if(/^#[0-9a-f]{6}$/i.test(x.renk||''))y.renk=x.renk;if(typeof x.kalinlik==='number'&&x.kalinlik>=.2&&x.kalinlik<=40)y.kalinlik=x.kalinlik;if(x.cizgi==='kesik'||x.cizgi==='nokta')y.cizgi=x.cizgi;if(Object.keys(y).length)K[ka]=y}if(Object.keys(K).length)p.gorsel.kenar=K;else delete p.gorsel.kenar}else delete p.gorsel.kenar;
   if(p.gorsel.katman&&typeof p.gorsel.katman==='object'){const k=p.gorsel.katman;p.gorsel.katman={oz:typeof k.oz==='string'?k.oz:'',sira:Array.isArray(k.sira)?k.sira.filter(x=>typeof x==='string'&&x.trim()).map(x=>x.trim()):[],yon:k.yon==='dikey'?'dikey':'yatay'}}else delete p.gorsel.katman;
   if(p.gorsel.dugum&&typeof p.gorsel.dugum==='object'){const D={};for(const [id,x] of Object.entries(p.gorsel.dugum))if(ids.has(id)&&x&&typeof x==='object'){const y={};if(/^#[0-9a-f]{6}$/i.test(x.renk||''))y.renk=x.renk;if(typeof x.boyut==='number'&&x.boyut>=0.25&&x.boyut<=4&&x.boyut!==1)y.boyut=x.boyut;if(x.etiket==='goster'||x.etiket==='gizle')y.etiket=x.etiket;if(Object.keys(y).length)D[id]=y}if(Object.keys(D).length)p.gorsel.dugum=D;else delete p.gorsel.dugum}else delete p.gorsel.dugum;
   for(const k of ['topluluk','cekirdek','ei','qap','omurga'])p[k]=Object.assign({},b[k],p[k]||{});

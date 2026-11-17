@@ -69,7 +69,13 @@ function yerlesimHesap(G,tur,tohum,grup,deger,alan){const n=G.n;if(!n)return {x:
     const sira=Math.floor((alan.x1-alan.x0)/ad);yal.forEach((v,k)=>{x[v]=alan.x0+ad/2+(k%sira)*ad;y[v]=alan.y1-serit+14+Math.floor(k/sira)*ad+ad/2});return {x,y,kesisim:Q.kesisim,yalniz:yal}}
   const bas=n>600?1:4;let en=null;for(let k=0;k<bas;k++){const Q=alanaSigdir(kuvvetYerlesim(G,tohum*31+k),alan);const c=bagKesisim(Q,G.E);if(!en||(c!=null&&c<en.kesisim))en={...Q,kesisim:c}}return en}
 /* çizimde kullanılan yarıçaplar: yerleşimdeki çakışma gidermesi de aynı değerleri kullanır */
-function yaricaplar(deger,st,bayrak){const mn=Math.min(...deger),mx=Math.max(...deger);const rmin=bayrak?Math.max(st.rmin,st.rmax*.45):st.rmin;return deger.map(v=>{const t=mx>mn?(v-mn)/(mx-mn):0;return rmin+(st.rmax-rmin)*Math.sqrt(t)})}
+function yaricaplar(deger,st,bayrak,aralik){const mn=Math.min(...deger),mx=Math.max(...deger);
+  /* aralik: [en küçük çap, en büyük çap] piksel; verilmezse biçemin varsayılanı */
+  const ar=gecerliAralik(aralik,1,200);const rmax=ar?ar[1]/2:st.rmax;const rmin=ar?ar[0]/2:bayrak?Math.max(st.rmin,st.rmax*.45):st.rmin;return deger.map(v=>{const t=mx>mn?(v-mn)/(mx-mn):0;return rmin+(rmax-rmin)*Math.sqrt(t)})}
+function gecerliAralik(a,en,ust){return Array.isArray(a)&&a.length===2&&a.every(x=>typeof x==='number'&&isFinite(x)&&x>=en&&x<=ust)&&a[0]<=a[1]?a:null}
+/* bağ kalınlığı: verilmezse 0,5 ile biçemin üst sınırı arasında; aralık verilirse en düşük ağırlık en ince, en yüksek en kalın */
+function bagKalinlik(w,wmn,wmx,st,aralik){const ar=gecerliAralik(aralik,.2,40);if(!ar){const t=Math.sqrt(w/wmx);return 0.5+(st.bagMax-0.5)*t}
+  const t=wmx>wmn?(Math.sqrt(w)-Math.sqrt(wmn))/(Math.sqrt(wmx)-Math.sqrt(wmn)):1;return ar[0]+(ar[1]-ar[0])*Math.max(0,Math.min(1,t))}
 
 /* ---------- Geometri ---------- */
 function sekilYolu(tur,x,y,r){const nok=(k,a0,rr=r)=>Array.from({length:k},(_,i)=>{const a=a0+i*2*Math.PI/k;return [x+rr*Math.cos(a),y+rr*Math.sin(a)]});const yol=L=>'M'+L.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join('L')+'Z';
@@ -81,7 +87,7 @@ function yaziGen(m,px,kalin){olcCanvas.font=`${kalin?600:400} ${px}px "Ag Metin"
 /* ---------- Ağ çizimi ----------
    girdi: G (gösterilecek bağlar), P (konumlar), deger (boyut ölçüsü), grup (renk grubu dizisi ya da null), grupAd (grup -> ad), o (ayarlar) */
 function agSvg(G,P,deger,grup,o){let st=STILLER[o.stil]||STILLER.dergi;const sb=!!o.sb,n=G.n,acikla=o.aciklama!==false;const ad=G.ad;const on='s'+Math.random().toString(36).slice(2,8);const bay=o.bayrak&&o.bayrak.some(Boolean)?o.bayrak:null;
-  const mn=Math.min(...deger),mx=Math.max(...deger);const rad=yaricaplar(deger,st,!!bay);const DO=o.dugumOzel||null;if(o.olcek&&o.olcek!==1)for(let i=0;i<n;i++)rad[i]*=o.olcek;if(DO)DO.forEach((x,i)=>{if(x&&x.boyut&&x.boyut!==1)rad[i]*=x.boyut});
+  const mn=Math.min(...deger),mx=Math.max(...deger);const rad=yaricaplar(deger,st,!!bay,o.dugumAralik);const DO=o.dugumOzel||null;if(o.olcek&&o.olcek!==1)for(let i=0;i<n;i++)rad[i]*=o.olcek;if(DO)DO.forEach((x,i)=>{if(x&&x.boyut&&x.boyut!==1)rad[i]*=x.boyut});
   /* gruplar: en büyük 8 grup renk alır, kalanlar "diğer" */
   let gruplar=[],grIx=new Map();if(grup){const say=new Map();grup.forEach(g=>{if(g!=null&&g!=='')say.set(g,(say.get(g)||0)+1)});const gs=o.grupSira?new Map(o.grupSira.map((g,i)=>[g,i])):null;gruplar=[...say.entries()].sort((a,b)=>(gs?(gs.has(a[0])?gs.get(a[0]):1e9)-(gs.has(b[0])?gs.get(b[0]):1e9):0)||b[1]-a[1]||String(a[0]).localeCompare(String(b[0]),'tr')).map(x=>x[0]);gruplar.slice(0,8).forEach((g,k)=>grIx.set(g,k))}
   if(o.ozelRenk&&!sb){const pal=st.palet.slice();if(grup)gruplar.slice(0,8).forEach((g,k)=>{if(o.ozelRenk[g])pal[k]=o.ozelRenk[g]});else if(o.ozelRenk.__tek)pal[0]=o.ozelRenk.__tek;st={...st,palet:pal}}
@@ -105,15 +111,23 @@ function agSvg(G,P,deger,grup,o){let st=STILLER[o.stil]||STILLER.dergi;const sb=
       a.bag.forEach(([i,j])=>{s+=`<line x1="${P.x[i].toFixed(1)}" y1="${P.y[i].toFixed(1)}" x2="${P.x[j].toFixed(1)}" y2="${P.y[j].toFixed(1)}" stroke-width="${(st.alanPad*1.6).toFixed(1)}"/>`});
       a.cek.forEach(i=>{s+=`<circle cx="${P.x[i].toFixed(1)}" cy="${P.y[i].toFixed(1)}" r="${(rad[i]+st.alanPad).toFixed(1)}" stroke="none"/>`});s+='</g>'})}
   /* bağlar */
-  const E=G.E.map((e,k)=>({...e,k})).filter(e=>e.w>=(o.esik||0));const wmx=Math.max(1,...G.E.map(e=>e.w)),ok=G.yonlu&&o.ok!==false;
-  E.sort((a,b)=>a.w-b.w).forEach(e=>{const t=Math.sqrt(e.w/wmx);const ic=grup&&grup[e.s]===grup[e.t]&&grIx.has(grup[e.s]);const c=sb?'#777':(!grup||(!ic&&o.gri)||(!ic&&!grup))?st.gri:(ic?grRenk(grIx.get(grup[e.s])):st.gri);
-    const op=st.bagOp[0]+(st.bagOp[1]-st.bagOp[0])*t,gen=0.5+(st.bagMax-0.5)*t;let x1=P.x[e.s],y1=P.y[e.s],x2=P.x[e.t],y2=P.y[e.t];const L=Math.hypot(x2-x1,y2-y1)||1;
+  const E=G.E.map((e,k)=>({...e,k})).filter(e=>e.w>=(o.esik||0));const wmx=Math.max(1,...G.E.map(e=>e.w)),wmn=G.E.length?Math.min(...G.E.map(e=>e.w)):1,ok=G.yonlu&&o.ok!==false;const KO=o.kenarOzel||null;
+  E.sort((a,b)=>a.w-b.w).forEach(e=>{const t=Math.sqrt(e.w/wmx);const ic=grup&&grup[e.s]===grup[e.t]&&grIx.has(grup[e.s]);let c=sb?'#777':(!grup||(!ic&&o.gri)||(!ic&&!grup))?st.gri:(ic?grRenk(grIx.get(grup[e.s])):st.gri);
+    const ko=KO&&KO[e.k];let op=st.bagOp[0]+(st.bagOp[1]-st.bagOp[0])*t,gen=bagKalinlik(e.w,wmn,wmx,st,o.kenarAralik);if(o.bagRenk&&!sb)c=o.bagRenk;if(ko){if(ko.kalinlik)gen=ko.kalinlik;if(ko.renk&&!sb){c=ko.renk;op=Math.max(op,.85)}}
+    const cz=ko&&ko.cizgi?ko.cizgi:o.bagCizgi;const kesik=cz?` stroke-dasharray="${cz==='nokta'?`0.1 ${(gen*2.2+2).toFixed(1)}`:`${(gen*3+4).toFixed(1)} ${(gen*2+3).toFixed(1)}`}"`:'';let x1=P.x[e.s],y1=P.y[e.s],x2=P.x[e.t],y2=P.y[e.t];const L=Math.hypot(x2-x1,y2-y1)||1;
     let qx=(x1+x2)/2,qy=(y1+y2)/2;if(o.egri){qx-=(y2-y1)*.12;qy+=(x2-x1)*.12}
-    if(ok){/* ok başı hedef düğümün kenarında; teğet kontrol noktasından hedefe */const tx=x2-qx,ty=y2-qy,tl=Math.hypot(tx,ty)||1;const ux=tx/tl,uy=ty/tl;const geri=rad[e.t]+1.5,ob=4+gen*1.6;
-      const ex=x2-ux*geri,ey=y2-uy*geri;x2=ex-ux*ob*.8;y2=ey-uy*ob*.8;const px=-uy,py=ux;
-      s+=`<path class="e" data-k="${e.k}" d="M${x1.toFixed(1)},${y1.toFixed(1)}Q${qx.toFixed(1)},${qy.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}" fill="none" stroke="${c}" stroke-opacity="${op.toFixed(2)}" stroke-width="${gen.toFixed(2)}" stroke-linecap="round"/>`;
-      s+=`<path class="e" data-k="${e.k}" d="M${ex.toFixed(1)},${ey.toFixed(1)}L${(ex-ux*ob+px*ob*.5).toFixed(1)},${(ey-uy*ob+py*ob*.5).toFixed(1)}L${(ex-ux*ob-px*ob*.5).toFixed(1)},${(ey-uy*ob-py*ob*.5).toFixed(1)}Z" fill="${c}" fill-opacity="${Math.min(1,op+.15).toFixed(2)}"/>`}
-    else s+=`<path class="e" data-k="${e.k}" d="M${x1.toFixed(1)},${y1.toFixed(1)}${o.egri?`Q${qx.toFixed(1)},${qy.toFixed(1)} `:'L'}${x2.toFixed(1)},${y2.toFixed(1)}" fill="none" stroke="${c}" stroke-opacity="${op.toFixed(2)}" stroke-width="${gen.toFixed(2)}" stroke-linecap="round"/>`;void L});
+    if(ok){/* ok: biçim (dolu üçgen, dar üçgen, açık), büyüklük, konum (uçta ya da bağın ortasında), gösterim yönü (ters: yalnız çizim, veri değişmez) */
+      let rT=rad[e.t];if(o.okTers){[x1,x2]=[x2,x1];[y1,y2]=[y2,y1];rT=rad[e.s]}const ob=(4+gen*1.6)*(o.okBoy||1),gn=o.okBicim==='dar'?.3:.5;
+      const bas=(ex,ey,ux,uy)=>{const px=-uy,py=ux,a1x=ex-ux*ob+px*ob*gn,a1y=ey-uy*ob+py*ob*gn,a2x=ex-ux*ob-px*ob*gn,a2y=ey-uy*ob-py*ob*gn;
+        return o.okBicim==='acik'?`<path class="e" data-k="${e.k}" d="M${a1x.toFixed(1)},${a1y.toFixed(1)}L${ex.toFixed(1)},${ey.toFixed(1)}L${a2x.toFixed(1)},${a2y.toFixed(1)}" fill="none" stroke="${c}" stroke-opacity="${Math.min(1,op+.15).toFixed(2)}" stroke-width="${Math.max(1,gen*.9).toFixed(2)}" stroke-linecap="round" stroke-linejoin="round"/>`
+          :`<path class="e" data-k="${e.k}" d="M${ex.toFixed(1)},${ey.toFixed(1)}L${a1x.toFixed(1)},${a1y.toFixed(1)}L${a2x.toFixed(1)},${a2y.toFixed(1)}Z" fill="${c}" fill-opacity="${Math.min(1,op+.15).toFixed(2)}"/>`};
+      const tx=x2-qx,ty=y2-qy,tl=Math.hypot(tx,ty)||1;const ux=tx/tl,uy=ty/tl;const geri=rT+1.5;const ex=x2-ux*geri,ey=y2-uy*geri;
+      if(o.okYer==='orta'){s+=`<path class="e" data-k="${e.k}" d="M${x1.toFixed(1)},${y1.toFixed(1)}Q${qx.toFixed(1)},${qy.toFixed(1)} ${ex.toFixed(1)},${ey.toFixed(1)}" fill="none" stroke="${c}" stroke-opacity="${op.toFixed(2)}" stroke-width="${gen.toFixed(2)}" stroke-linecap="round"${kesik}/>`;
+        const mx=.25*x1+.5*qx+.25*ex,my=.25*y1+.5*qy+.25*ey,dx=ex-x1,dy=ey-y1,dl=Math.hypot(dx,dy)||1;s+=bas(mx+dx/dl*ob/2,my+dy/dl*ob/2,dx/dl,dy/dl)}
+      else{const kis=o.okBicim==='acik'?gen*.5:ob*.8;x2=ex-ux*kis;y2=ey-uy*kis;
+        s+=`<path class="e" data-k="${e.k}" d="M${x1.toFixed(1)},${y1.toFixed(1)}Q${qx.toFixed(1)},${qy.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}" fill="none" stroke="${c}" stroke-opacity="${op.toFixed(2)}" stroke-width="${gen.toFixed(2)}" stroke-linecap="round"${kesik}/>`;s+=bas(ex,ey,ux,uy)}}
+    else s+=`<path class="e" data-k="${e.k}" d="M${x1.toFixed(1)},${y1.toFixed(1)}${o.egri?`Q${qx.toFixed(1)},${qy.toFixed(1)} `:'L'}${x2.toFixed(1)},${y2.toFixed(1)}" fill="none" stroke="${c}" stroke-opacity="${op.toFixed(2)}" stroke-width="${gen.toFixed(2)}" stroke-linecap="round"${kesik}/>`;
+    /* etkileşimli görünümde ince bağlara tıklanabilsin diye görünmez geniş alan */if(o.kenarTik)s+=`<path class="eh" data-k="${e.k}" d="M${P.x[e.s].toFixed(1)},${P.y[e.s].toFixed(1)}${o.egri?`Q${qx.toFixed(1)},${qy.toFixed(1)} `:'L'}${P.x[e.t].toFixed(1)},${P.y[e.t].toFixed(1)}" fill="none" stroke="#000" stroke-opacity="0" stroke-width="${Math.max(10,gen+8).toFixed(1)}" pointer-events="stroke"/>`;void L});
   /* düğümler */
   const isaret=o.isaret||null;
   Array.from({length:n},(_,i)=>i).sort((a,b)=>rad[a]-rad[b]).forEach(i=>{const c=renk(i);const k=grup?(grIx.get(grup[i])??7):0;const yol=sb&&grup?sekilYolu(k,P.x[i],P.y[i],rad[i]):null;
@@ -135,18 +149,19 @@ function agSvg(G,P,deger,grup,o){let st=STILLER[o.stil]||STILLER.dergi;const sb=
     const yer=aday.find(([x,y])=>!carp({x0:x-gw/2-2,y0:y-gh*.85,x1:x+gw/2+2,y1:y+gh*.2}))||aday[0];kutu.push({x0:yer[0]-gw/2-2,y0:yer[1]-gh*.85,x1:yer[0]+gw/2+2,y1:yer[1]+gh*.2});
     s+=`<text class="ga" x="${yer[0].toFixed(1)}" y="${yer[1].toFixed(1)}" text-anchor="middle" font-size="${st.grupPx}" font-weight="700" letter-spacing=".3" fill="${c}" stroke="${st.zemin}" stroke-width="4" stroke-linejoin="round" paint-order="stroke">${esc(m)}</text>`});
   s+='</g>';
-  if(acikla)s+=aciklamaKutusu(st,sb,gruplar,grIx,o,mn,mx,wmx,n,G.m);
+  if(acikla)s+=aciklamaKutusu(st,sb,gruplar,grIx,o,mn,mx,wmx,n,G.m,wmn);
   s+='</svg>';return {svg:s,gizliEtiket:gizli,rad}}
-function aciklamaKutusu(st,sb,gruplar,grIx,o,mn,mx,wmx,n,m){const x=948;let y=58;let s=`<g font-size="12" fill="${st.yazi}">${o.harita?`<rect x="${x-14}" y="36" width="${CW-x+4}" height="${CH-44}" fill="${st.zemin}" fill-opacity=".92"/>`:''}`;
+function aciklamaKutusu(st,sb,gruplar,grIx,o,mn,mx,wmx,n,m,wmn=1){const x=948;let y=58;let s=`<g font-size="12" fill="${st.yazi}">${o.harita?`<rect x="${x-14}" y="36" width="${CW-x+4}" height="${CH-44}" fill="${st.zemin}" fill-opacity=".92"/>`:''}`;
   if(o.renkBaslik){s+=`<text x="${x}" y="${y}" font-size="13" font-weight="700">${esc(o.renkBaslik)}</text>`;y+=10;
     gruplar.slice(0,8).forEach((g,k)=>{const yol=sb?sekilYolu(k,x+7,y+10,6):null;const c=sb?sbDolgu(st)[k]:st.palet[k];
       s+=(yol?`<path d="${yol}" fill="${c}" stroke="${sbKenar(st,c)}" stroke-width="1"/>`:`<circle cx="${x+7}" cy="${y+10}" r="6" fill="${c}"/>`)+`<text x="${x+20}" y="${y+14}">${esc(kisalt(o.grupAd?o.grupAd(g):String(g),26))}</text>`;y+=21});
     if(gruplar.length>8){s+=`<circle cx="${x+7}" cy="${y+10}" r="6" fill="${sb?'#d0d0d0':DIGER_RENK}"/><text x="${x+20}" y="${y+14}">${esc(o.digerAd||'…')} (${gruplar.length-8})</text>`;y+=21}y+=20}
   if(o.boyutBaslik){s+=`<text x="${x}" y="${y}" font-size="13" font-weight="700">${esc(o.boyutBaslik)}</text>`;y+=12;
-    [0,.25,1].forEach((t,k)=>{const r=st.rmin+(st.rmax-st.rmin)*Math.sqrt(t);const cy=y+st.rmax;const cx=x+st.rmax+k*(st.rmax*2+18);const v=mn+(mx-mn)*t;
-      s+=`<circle cx="${cx}" cy="${cy}" r="${r.toFixed(1)}" fill="none" stroke="${st.soluk}" stroke-width="1"/><text x="${cx}" y="${cy+st.rmax+15}" text-anchor="middle" fill="${st.soluk}" font-size="11">${esc(o.sayiYaz?o.sayiYaz(v):v.toFixed(2))}</text>`});y+=st.rmax*2+44}
+    /* aralık verilmişse açıklamadaki daireler aynı oranla, en çok 22 piksel yarıçapla gösterilir */const ar=gecerliAralik(o.dugumAralik,1,200);const R0=ar?ar[0]/2:st.rmin,R1=ar?ar[1]/2:st.rmax;const ol=ar&&R1>22?22/R1:1;const RM=ar?R1*ol:st.rmax;
+    [0,.25,1].forEach((t,k)=>{const r=(R0+(R1-R0)*Math.sqrt(t))*ol;const cy=y+RM;const cx=x+RM+k*(RM*2+18);const v=mn+(mx-mn)*t;
+      s+=`<circle cx="${cx}" cy="${cy}" r="${r.toFixed(1)}" fill="none" stroke="${st.soluk}" stroke-width="1"/><text x="${cx}" y="${cy+RM+15}" text-anchor="middle" fill="${st.soluk}" font-size="11">${esc(o.sayiYaz?o.sayiYaz(v):v.toFixed(2))}</text>`});y+=RM*2+44}
   if(o.bagBaslik&&wmx>1){s+=`<text x="${x}" y="${y}" font-size="13" font-weight="700">${esc(o.bagBaslik)}</text>`;y+=16;
-    [1,Math.round((1+wmx)/2),wmx].filter((v,i,a)=>a.indexOf(v)===i).forEach((w,k)=>{const t=Math.sqrt(w/wmx);s+=`<line x1="${x}" x2="${x+44}" y1="${y+k*20}" y2="${y+k*20}" stroke="${st.gri}" stroke-width="${(0.5+(st.bagMax-0.5)*t).toFixed(2)}" stroke-linecap="round"/><text x="${x+54}" y="${y+k*20+4}" fill="${st.soluk}" font-size="11">${esc(Number.isInteger(w)?Number(w).toLocaleString(S.dil):(o.sayiYaz?o.sayiYaz(w):String(w)))}</text>`});y+=70}
+    const kar=gecerliAralik(o.kenarAralik,.2,40);(kar?[wmn,Math.round((wmn+wmx)/2),wmx]:[1,Math.round((1+wmx)/2),wmx]).filter((v,i,a)=>a.indexOf(v)===i).forEach((w,k)=>{s+=`<line x1="${x}" x2="${x+44}" y1="${y+k*20}" y2="${y+k*20}" stroke="${st.gri}" stroke-width="${Math.min(14,bagKalinlik(w,wmn,wmx,st,o.kenarAralik)).toFixed(2)}" stroke-linecap="round"/><text x="${x+54}" y="${y+k*20+4}" fill="${st.soluk}" font-size="11">${esc(Number.isInteger(w)?Number(w).toLocaleString(S.dil):(o.sayiYaz?o.sayiYaz(w):String(w)))}</text>`});y+=70}
   if(o.notlar)o.notlar.forEach(m=>{s+=`<text x="${x}" y="${y}" fill="${st.soluk}" font-size="11">${esc(m)}</text>`;y+=16});
   if(o.altBilgi)s+=`<text x="${x}" y="${CH-24}" fill="${st.soluk}" font-size="10.5">${esc(o.altBilgi)}</text>`;return s+'</g>'}
 

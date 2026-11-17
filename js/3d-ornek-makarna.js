@@ -28,3 +28,13 @@ function ornekMakarna(){const p=bosProje();const k=S.dil==='tr'?0:1;p.ad=t('samp
   p.iliskiler=[{id:'akis',ad:t('sample3Rel'),kenarlar:MAKARNA.bag.map(e=>e.slice())}];p.aktif='akis';
   p.gorsel={...GORSEL_VARSAYILAN,yerlesim:'katman',katman:{oz:'asama',sira:MAKARNA.katman.map(x=>x[k]),yon:'yatay'},renk:'oz:asama',boyut:'guc',alan:false,gad:false,egri:true,ok:true,etiket:40};
   p.ei.oz='asama';p.not=t('sample3Note');return p}
+/* ---------- içe aktarma için örnek dosyalar (İçe aktar penceresi) ----------
+   tur: 'kenar' (bağ listesi: Kaynak, Hedef, Ağırlık) ya da 'ozellik' (düğüm özellikleri: Düğüm, Aşama, Bölge); bicim: 'csv' ya da 'xlsx'.
+   CSV, Türkçe Excel'in doğrudan açabilmesi için noktalı virgülle ayrılır ve UTF-8 BOM ile başlar. */
+function makarnaSatirlar(tur){const k=S.dil==='tr'?0:1;const ad=new Map(MAKARNA.dugum.map(d=>[d[0],k?d[3]:d[2]]));
+  if(tur==='kenar')return [[t('colSource'),t('colTarget'),t('colWeightT')],...MAKARNA.bag.map(([a,b,w])=>[ad.get(a),ad.get(b),w])];
+  const P_=ornekMakarna();return [[t('colNode'),t('sample3AttrStage'),t('sample3AttrRegion')],...P_.dugumler.map(d=>[d.ad,d.oz.asama,d.oz.bolge])]}
+function ornekDosyaIndir(tur,bicim){const L=makarnaSatirlar(tur);const ad=t(tur==='kenar'?'sampleFileEdges':'sampleFileAttrs');
+  if(bicim==='xlsx')indir(ad+'.xlsx',xlsxYap([{ad:t(tur==='kenar'?'sheetEdges':'sheetAttrs'),satirlar:[{h:L[0],kalin:true},...L.slice(1)]}]));
+  else{const h=v=>{const s=String(v);return /[;"\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s};indir(ad+'.csv',new Blob(['﻿'+L.map(r=>r.map(h).join(';')).join('\r\n')+'\r\n'],{type:'text/csv;charset=utf-8'}))}
+  tost(t('downloaded'))}

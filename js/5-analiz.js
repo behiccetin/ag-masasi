@@ -47,14 +47,14 @@ function boyutDeger(kaynak=P().gorsel.boyut){const G=agG(),p=P();if(!G)return []
 function boyutAd(kaynak=P().gorsel.boyut){if(kaynak==='esit')return '';if(kaynak&&kaynak.startsWith('oz:')){const o=P().ozellikler.find(x=>x.k===kaynak.slice(3));return o?o.ad:''}return olcuAd(kaynak)}
 
 /* ---------- Görünüm durumu (kaydedilmez) ---------- */
-const GORUNUM={konum:null,anahtar:'',donusum:{k:1,x:0,y:0},secili:null,arama:'',kalite:null};
+const GORUNUM={konum:null,anahtar:'',donusum:{k:1,x:0,y:0},secili:null,seciliKenar:null,arama:'',kalite:null};
 const ALAN_AG={x0:40,y0:56,x1:910,y1:770},ALAN_TAM={x0:40,y0:56,x1:1160,y1:770};
 function yerlesimAnahtar(){const p=P(),g=p.gorsel;return [S.ver_yapi??'',p.aktif,g.yerlesim,g.tohum,g.aciklama,g.renk,agG()?.m].join('|')}
 /* yerleşimin önbellek anahtarı; G verilmezse etkin ağ kullanılır */
-function yerlesimAnahtar(p=P(),G=agG()){const g=p.gorsel;const hk=g.yerlesim==='harita'?JSON.stringify({...g.harita,geo:g.harita.geo?(g.harita.geo.features||[]).length:0}):'';return [p.aktif,G.n,G.m,g.yerlesim,g.tohum,g.aciklama?1:0,hk,g.yerlesim==='grup'||g.yerlesim==='daire'||g.yerlesim==='halka'?g.renk+g.boyut:'',yapiParmakIzi()].join('|')+(g.yerlesim==='katman'?'|K'+katmanParmakIzi(p,G)+'|'+g.stil+g.boyut+(g.olcek||1)+'|'+(g.bosluk||0):'')}
+function yerlesimAnahtar(p=P(),G=agG()){const g=p.gorsel;const hk=g.yerlesim==='harita'?JSON.stringify({...g.harita,geo:g.harita.geo?(g.harita.geo.features||[]).length:0}):'';return [p.aktif,G.n,G.m,g.yerlesim,g.tohum,g.aciklama?1:0,hk,g.yerlesim==='grup'||g.yerlesim==='daire'||g.yerlesim==='halka'?g.renk+g.boyut:'',yapiParmakIzi()].join('|')+(g.yerlesim==='katman'?'|K'+katmanParmakIzi(p,G)+'|'+g.stil+g.boyut+(g.olcek||1)+'|'+(g.bosluk||0)+'|'+(g.dugumAralik||''):'')}
 function yerlesimAl(){const p=P(),g=p.gorsel,G=agG();if(!G)return null;const k=yerlesimAnahtar(p,G);
-  const yc=()=>{const st=STILLER[g.stil]||STILLER.dergi;const bay=g.bayrak&&COG.d?bayraklar(G,g.yerlesim==='harita'?g.harita.eslesme:'ad').some(Boolean):false;return {st,bay,imza:g.stil+'|'+bay+'|'+g.boyut+'|'+(g.olcek||1)+'|'+(g.bosluk||0)}};
-  const rd=c=>{const r=yaricaplar(boyutDeger(),c.st,c.bay);const o=g.olcek||1;return o===1?r:r.map(v=>v*o)};
+  const yc=()=>{const st=STILLER[g.stil]||STILLER.dergi;const bay=g.bayrak&&COG.d?bayraklar(G,g.yerlesim==='harita'?g.harita.eslesme:'ad').some(Boolean):false;return {st,bay,imza:g.stil+'|'+bay+'|'+g.boyut+'|'+(g.olcek||1)+'|'+(g.bosluk||0)+'|'+(g.dugumAralik||'')}};
+  const rd=c=>{const r=yaricaplar(boyutDeger(),c.st,c.bay,g.dugumAralik);const o=g.olcek||1;return o===1?r:r.map(v=>v*o)};
   if(GORUNUM.konum&&GORUNUM.anahtar===k){const Y=GORUNUM.konum;if(!Y.elle&&['kuvvet','harita','grup'].includes(g.yerlesim)){const c=yc();if(Y.imza!==c.imza){cakismaGider(Y,rd(c),g.aciklama?ALAN_AG:ALAN_TAM,g.bosluk||0);Y.imza=c.imza}}return Y}const RG=renkGrubu();const alan=g.aciklama?ALAN_AG:ALAN_TAM;
   const Y=g.yerlesim==='katman'?katmanYerlesim(G,alan,katmanBilgi(p,G),rd(yc()),g.bosluk||0):g.yerlesim==='harita'&&COG.d?(haritaYerlesim(G,g.harita,alan)||yerlesimHesap(G,'kuvvet',g.tohum,null,boyutDeger(),alan)):yerlesimHesap(G,g.yerlesim==='harita'?'kuvvet':g.yerlesim,g.tohum,RG?RG.grup.map(x=>x??'~'):null,boyutDeger(),alan);
   /* kaydedilmiş elle düzenlemeler */const kay=p.gorsel.konum;if(kay&&kay.anahtar===k&&kay.poz){G.ids.forEach((id,i)=>{const q=kay.poz[id];if(q){Y.x[i]=q[0];Y.y[i]=q[1]}});Y.elle=true}
@@ -70,7 +70,7 @@ function agCizimAyar(o={}){const p=P(),g=p.gorsel,G=agG();const RG=renkGrubu();c
   return {G:Gc,deger:boyutDeger(),grup:RG?RG.grup:null,ayar:{stil:g.stil,sb:g.sb,etiket:g.etiket,esik:g.esik,egri:g.egri,gri:g.gri,alan:g.alan&&!!RG&&!RG.sirali&&g.yerlesim!=='harita',gad:g.gad&&!!RG&&!RG.sirali,aciklama:g.aciklama,ok:g.ok,
     renkBaslik:RG?RG.baslik:null,grupAd:RG?RG.ad:null,digerAd:t('other'),boyutBaslik:g.boyut==='esit'?null:boyutAd(),bagBaslik:G.agirlikli?t('legendWeight'):null,sayiYaz:v=>sayi(v,Math.abs(v)<10?2:0),
     harita:GORUNUM.konum&&GORUNUM.konum.harita?GORUNUM.konum.katman:null,bayrak:g.bayrak&&COG.d?bayraklar(G,g.yerlesim==='harita'?g.harita.eslesme:'ad'):null,
-    notlar:[t('legendNodes',sayi(G.n),sayi(Gc.E.length))].concat(om?[t('legendBackbone',sayi(om.length),sayi(G.m))]:[]),ozelRenk:(g.renkler||{})[g.renk]||null,dugumOzel:dugumOzelDizi(G),grupSira:katmanRenkSira(g,G),olcek:g.olcek||1,altBilgi:g.imzaAcik?(S.dil==='tr'?'Ağ Masası (Çetin ve Filiz, 2026)':'Ağ Masası (Çetin & Filiz, 2026)'):null,baslik:o.baslik,ipucuBaslik:o.ipucu,...o}}}
+    notlar:[t('legendNodes',sayi(G.n),sayi(Gc.E.length))].concat(om?[t('legendBackbone',sayi(om.length),sayi(G.m))]:[]),ozelRenk:(g.renkler||{})[g.renk]||null,dugumOzel:dugumOzelDizi(G),grupSira:katmanRenkSira(g,G),olcek:g.olcek||1,dugumAralik:g.dugumAralik||null,kenarAralik:g.kenarAralik||null,kenarOzel:kenarOzelDizi(Gc),okBicim:g.okBicim||null,okBoy:g.okBoy||1,okYer:g.okYer||null,okTers:!!g.okTers,bagCizgi:g.bagCizgi||null,bagRenk:g.bagRenk||null,altBilgi:g.imzaAcik?(S.dil==='tr'?'Ağ Masası (Çetin ve Filiz, 2026)':'Ağ Masası (Çetin & Filiz, 2026)'):null,baslik:o.baslik,ipucuBaslik:o.ipucu,...o}}}
 
 /* ---------- Topluluk adları: üyelere bağlı tutulur ----------
    p.topluluk.adlar = [{ad, uye:[düğüm kimlikleri]}]. Yeni bölmede üyeleri Jaccard ≥ 0,5 örtüşen topluluk aynı adı alır. */

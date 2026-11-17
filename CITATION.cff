@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "Bu yazılımı kullandıysanız lütfen aşağıdaki gibi kaynak gösterin. / If you use this software, please cite it as below."
 type: software
 title: "Ağ Masası"
-abstract: "Sosyal ağ analizi için tarayıcıda çalışan, kurulumsuz, ücretsiz araç: merkezilik ölçüleri, Louvain, yönlü Louvain (Leicht-Newman), Leiden ve Infomap toplulukları, çekirdek-çevre, aracılık, triad sayımı, küçük dünya, dayanıklılık, QAP ve MRQAP testleri, yayına hazır ağ çizimi, Word ve Excel raporu, ağ üzerinde düğüm düzenleme, .agm oturum dosyası ve katmanlı yerleşim (tedarik zincirleri). / A free, install-free, browser-based tool for social network analysis."
+abstract: "Sosyal ağ analizi için tarayıcıda çalışan, kurulumsuz, ücretsiz araç: merkezilik ölçüleri, Louvain, yönlü Louvain (Leicht-Newman), Leiden ve Infomap toplulukları, çekirdek-çevre, aracılık, triad sayımı, küçük dünya, dayanıklılık, QAP ve MRQAP testleri, yayına hazır ağ çizimi, Word ve Excel raporu, ağ üzerinde düğüm düzenleme, .agm oturum dosyası, katmanlı yerleşim (tedarik zincirleri), bağ düzenleme, ok ve çizgi ayarları ve örnek içe aktarma dosyaları. / A free, install-free, browser-based tool for social network analysis."
 authors:
   - family-names: "Çetin"
     given-names: "Behiç"
@@ -10,7 +10,7 @@ authors:
   - family-names: "Filiz"
     given-names: "Taner"
     orcid: "https://orcid.org/0000-0002-2888-9695"
-version: "1.2.0"
+version: "1.3.0"
 doi: "10.5281/zenodo.24262475"
 identifiers:
   - type: doi

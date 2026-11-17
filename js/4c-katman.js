@@ -28,7 +28,8 @@ function katmanBilgi(p=P(),G=agG()){const A=katmanAyar(p);
   if(!A.oz){const k=otoKatman(G);const L=k.length?Math.max(...k)+1:0;return {kat:k,adlar:Array.from({length:L},(_,i)=>t('layerN',i+1)),oz:'',yon:A.yon,bos:false}}
   const deger=G.ids.map(id=>{const d=p.dugumler.find(x=>x.id===id);const v=d?d.oz[A.oz]:null;return v==null?'':String(v).trim()});
   const adlar=[...new Set(A.sira.map(s=>s.trim()).filter(Boolean))];const anahtar=new Map(adlar.map((a,i)=>[adAnahtar(a),i]));
-  const yeni=[...new Set(deger.filter(v=>v&&!anahtar.has(adAnahtar(v))))].sort((a,b)=>a.localeCompare(b,S.dil));yeni.forEach(v=>{anahtar.set(adAnahtar(v),adlar.length);adlar.push(v)});
+  /* sırası belirlenmemiş katmanlar akış yönüne göre dizilir: düğümlerinin kendiliğinden katman ortalaması küçük olan önce (içe aktarılan veride buğday, değirmen, fabrika... sırası kendiliğinden çıkar) */
+  let yeni=[...new Set(deger.filter(v=>v&&!anahtar.has(adAnahtar(v))))];if(yeni.length>1){const ok=otoKatman(G),top=new Map();deger.forEach((v,i)=>{if(!v)return;const e=top.get(v)||[0,0];e[0]+=ok[i];e[1]++;top.set(v,e)});const ort=v=>{const e=top.get(v);return e?e[0]/e[1]:0};yeni.sort((a,b)=>ort(a)-ort(b)||a.localeCompare(b,S.dil))}yeni.forEach(v=>{anahtar.set(adAnahtar(v),adlar.length);adlar.push(v)});
   const bos=deger.some(v=>!v);const kat=deger.map(v=>v?anahtar.get(adAnahtar(v)):adlar.length);if(bos)adlar.push(t('layerNone'));
   return {kat,adlar,oz:A.oz,yon:A.yon,bos}}
 /* yerleşim önbelleği için: katman ataması değişince yeniden yerleşir, ad değişince yerleşmez */

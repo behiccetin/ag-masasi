@@ -142,3 +142,6 @@ abbr.kisa:focus-visible{outline-offset:1px}
 @media print{.yazdirma{display:none!important}}
 /* Ağ Masası · Öğr. Gör. Dr. Behiç ÇETİN · MIT Lisansı */
 .formul math{font-size:1.15rem;margin:.5rem 0;overflow-x:auto;max-width:100%}
+/* seçili bağ ve bağ tıklama alanı (Ağ sekmesi) */
+#tuval svg .eh{cursor:pointer}
+#tuval svg .e.secili{stroke-opacity:1!important;fill-opacity:1!important;filter:drop-shadow(0 0 2.5px var(--color-primary))}
