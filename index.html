@@ -109,7 +109,7 @@
 /* Ağ Masası · Öğr. Gör. Dr. Behiç ÇETİN, Dr. Taner FİLİZ · MIT Lisansı */
 
 /* ====================== DURUM ====================== */
-const SURUM='1.3.0';
+const SURUM='1.3.1';
 const KAYIT='agMasasi.v1';
 const S={P:null,dil:'tr',sekme:'giris',kilit:false,kaydedildi:false,sonuc:null,ver:0};
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -1920,7 +1920,7 @@ function xlsxYap(sayfalar){const ad=s=>s.replace(/[\[\]:*?\/\\]/g,' ').slice(0,3
 /* ====================== ATIF ====================== */
 const DEPO='https://github.com/behiccetin/ag-masasi';
 /* DOI_SURUM: bu sürümün Zenodo DOI'si (sürüm GitHub'da yayımlanıp Zenodo DOI verince yazılır). Boşken atıf, bütün sürümleri kapsayan DOI'yi kullanır. */
-const DOI_SURUM='10.5281/zenodo.24305164';
+const DOI_SURUM='';
 const DOI_TUM='10.5281/zenodo.24262475';
 const DOI=DOI_SURUM||DOI_TUM;
 const KAYNAK_URL=DOI?'https://doi.org/'+DOI:DEPO;

@@ -1,7 +1,7 @@
 /* Ağ Masası · Öğr. Gör. Dr. Behiç ÇETİN, Dr. Taner FİLİZ · MIT Lisansı */
 
 /* ====================== DURUM ====================== */
-const SURUM='1.3.0';
+const SURUM='1.3.1';
 const KAYIT='agMasasi.v1';
 const S={P:null,dil:'tr',sekme:'giris',kilit:false,kaydedildi:false,sonuc:null,ver:0};
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
